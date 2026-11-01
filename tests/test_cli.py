@@ -1,0 +1,209 @@
+import json
+from datetime import datetime
+
+import pytest
+
+from stories_bot import cli
+from stories_bot.instagram import InstagramClient, InstagramError
+from stories_bot.notify import TelegramNotifier
+from stories_bot.story_queue import MAX_ATTEMPTS, add_art, load_queue
+
+MORNING = "2026-10-09T10:00"
+ENV = {
+    "IG_USER_ID": "1",
+    "IG_ACCESS_TOKEN": "t",
+    "R2_ACCOUNT_ID": "a",
+    "R2_ACCESS_KEY_ID": "k",
+    "R2_SECRET_ACCESS_KEY": "s",
+    "R2_BUCKET": "b",
+    "R2_PUBLIC_URL": "https://cdn.example",
+}
+
+
+@pytest.fixture
+def project(tmp_path, monkeypatch, storage):
+    for name in [*ENV, "TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID"]:
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setattr(cli, "build_storage", lambda settings: storage)
+    (tmp_path / "pace.json").write_text(json.dumps({"low_queue": 1}))
+    return tmp_path
+
+
+def configure(monkeypatch):
+    for name, value in ENV.items():
+        monkeypatch.setenv(name, value)
+
+
+def enqueue(project, storage, *names):
+    return [
+        add_art(
+            storage,
+            project / "state" / "queue.json",
+            b"img",
+            stem=name,
+            suffix=".jpg",
+            now=datetime(2026, 10, 9, 8, 0),
+        )
+        for name in names
+    ]
+
+
+def run(project, now=MORNING, *extra):
+    return cli.main(
+        [
+            "--pace", str(project / "pace.json"),
+            "--queue", str(project / "state" / "queue.json"),
+            "--failed", str(project / "state" / "failed.json"),
+            "--state", str(project / "state" / "posted.json"),
+            "--now", now,
+            *extra,
+        ]
+    )  # fmt: skip
+
+
+def posted(project):
+    return json.loads((project / "state" / "posted.json").read_text())
+
+
+@pytest.fixture
+def sent(monkeypatch):
+    """Telegram is configured and every message is captured instead of being sent."""
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "bot-secret")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "42")
+    messages: list[str] = []
+    monkeypatch.setattr(TelegramNotifier, "send", lambda self, text: messages.append(text))
+    return messages
+
+
+def fake_publish(monkeypatch, result="m1", calls=None):
+    def publish(self, url, *, is_video):
+        if calls is not None:
+            calls.append((url, is_video))
+        if isinstance(result, Exception):
+            raise result
+        return result
+
+    monkeypatch.setattr(InstagramClient, "publish_story", publish)
+
+
+def test_publishes_the_head_of_the_queue_then_cleans_up(project, storage, monkeypatch):
+    configure(monkeypatch)
+    first, second = enqueue(project, storage, "a", "b")
+    calls = []
+    fake_publish(monkeypatch, calls=calls)
+
+    assert run(project) == cli.EXIT_OK
+    assert calls == [(f"https://cdn.example/{first.key}", False)]
+    assert posted(project)[first.id]["media_id"] == "m1"
+    assert [i.id for i in load_queue(project / "state" / "queue.json")] == [second.id]
+    assert storage.deleted == [first.key]
+
+
+def test_one_story_per_run_and_respects_the_interval(project, storage, monkeypatch):
+    configure(monkeypatch)
+    enqueue(project, storage, "a", "b", "c")
+    fake_publish(monkeypatch)
+
+    assert run(project, "2026-10-09T10:00") == cli.EXIT_OK
+    assert run(project, "2026-10-09T10:05") == cli.EXIT_OK  # too soon
+    assert len(posted(project)) == 1
+    assert run(project, "2026-10-09T10:20") == cli.EXIT_OK
+    assert len(posted(project)) == 2
+
+
+def test_outside_hours_publishes_nothing_and_needs_no_credentials(project, storage):
+    enqueue(project, storage, "a")
+    assert run(project, "2026-10-09T23:00") == cli.EXIT_OK
+    assert len(load_queue(project / "state" / "queue.json")) == 1
+
+
+def test_empty_queue_succeeds_without_credentials(project):
+    assert run(project) == cli.EXIT_OK
+
+
+def test_dry_run_publishes_nothing(project, storage):
+    enqueue(project, storage, "a")
+    assert run(project, MORNING, "--dry-run") == cli.EXIT_OK
+    assert not (project / "state" / "posted.json").exists()
+
+
+def test_missing_credentials_is_a_setup_error_and_notifies(project, storage, sent):
+    enqueue(project, storage, "a")
+    assert run(project) == cli.EXIT_BAD_SETUP
+    assert len(sent) == 1 and sent[0].startswith("❌ Story não publicado: configuração")
+
+
+def test_invalid_pace_is_a_setup_error(project):
+    (project / "pace.json").write_text("{not json")
+    assert run(project) == cli.EXIT_BAD_SETUP
+
+
+def test_failure_counts_an_attempt_and_keeps_the_item(project, storage, monkeypatch, sent):
+    configure(monkeypatch)
+    (item,) = enqueue(project, storage, "a")
+    fake_publish(monkeypatch, InstagramError("HTTP 400: nope", 100))
+
+    assert run(project) == cli.EXIT_FAILED
+    (queued,) = load_queue(project / "state" / "queue.json")
+    assert queued.id == item.id and queued.attempts == 1
+    assert not (project / "state" / "posted.json").exists()
+    assert sent == ["❌ Falha ao publicar a.jpg: HTTP 400: nope. Tento de novo na próxima rodada."]
+
+
+def test_item_that_keeps_failing_is_set_aside_so_the_queue_moves_on(project, storage, monkeypatch):
+    configure(monkeypatch)
+    bad, good = enqueue(project, storage, "bad", "good")
+    fake_publish(monkeypatch, InstagramError("HTTP 400: nope", 100))
+    for _ in range(MAX_ATTEMPTS):
+        assert run(project) == cli.EXIT_FAILED
+
+    assert [i.id for i in load_queue(project / "state" / "queue.json")] == [good.id]
+    failed = json.loads((project / "state" / "failed.json").read_text())
+    assert failed[0]["id"] == bad.id
+
+
+def test_expired_token_stops_without_burning_attempts(project, storage, monkeypatch, sent):
+    configure(monkeypatch)
+    enqueue(project, storage, "a")
+    fake_publish(monkeypatch, InstagramError("HTTP 400: expired", 190))
+
+    assert run(project) == cli.EXIT_BAD_SETUP
+    assert load_queue(project / "state" / "queue.json")[0].attempts == 0
+    assert sent == ["❌ O token do Instagram expirou. Gere um novo (stories-token)."]
+
+
+def test_item_posted_but_still_queued_is_not_published_twice(project, storage, monkeypatch):
+    """A run that died between recording the post and dequeuing must not repeat the Story."""
+    configure(monkeypatch)
+    ghost, nxt = enqueue(project, storage, "ghost", "next")
+    (project / "state" / "posted.json").write_text(
+        json.dumps(
+            {ghost.id: {"name": "x", "media_id": "m0", "posted_at": "2026-10-08T10:00:00-03:00"}}
+        )
+    )
+    calls = []
+    fake_publish(monkeypatch, calls=calls)
+
+    assert run(project) == cli.EXIT_OK
+    assert calls == [(f"https://cdn.example/{nxt.key}", False)]
+
+
+def test_notifications_follow_the_queue_level(project, storage, monkeypatch, sent):
+    configure(monkeypatch)
+    enqueue(project, storage, "a", "b")
+    fake_publish(monkeypatch)
+
+    assert run(project, "2026-10-09T10:00") == cli.EXIT_OK  # 1 left == low_queue
+    assert sent == ["⚠️ Fila acabando: restam 1 Stories."]
+    assert run(project, "2026-10-09T10:30") == cli.EXIT_OK
+    assert sent[-1].startswith("⚠️ A fila de Stories acabou")
+
+
+def test_notify_each_publish_when_enabled(project, storage, monkeypatch, sent):
+    configure(monkeypatch)
+    (project / "pace.json").write_text(json.dumps({"notify_each": True, "low_queue": 0}))
+    enqueue(project, storage, "a", "b")
+    fake_publish(monkeypatch)
+
+    assert run(project) == cli.EXIT_OK
+    assert sent == ["✅ Story publicado: a.jpg (09/10 10:00). Fila: 1"]

@@ -1,0 +1,9 @@
+{
+  "timezone": "America/Sao_Paulo",
+  "start": "09:00",
+  "end": "21:00",
+  "interval_minutes": 20,
+  "daily_limit": 36,
+  "low_queue": 10,
+  "notify_each": false
+}
