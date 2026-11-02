@@ -60,30 +60,30 @@ Você terá: `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BU
    `IG_USER_ID`, `IG_ACCESS_TOKEN`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, `R2_PUBLIC_URL`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
 3. *Settings → Actions → General → Workflow permissions*: **Read and write permissions**.
 
-## 5. Gatilho externo (a cada 2 minutos)
+## 5. Gatilho externo (a cada 3 minutos)
 
-O bot publica **uma arte por execução**, então o gatilho precisa ser mais frequente que o intervalo do `pace.json`, de preferência um divisor dele. Com `interval_minutes` em 8 (o ritmo atual), use **2 minutos**: a arte seguinte sai exatamente 8 minutos depois da anterior. Com 4 minutos também funciona, mas o ritmo médio fica um pouco mais lento. Com intervalos de 20 minutos ou mais, 5 a 10 minutos bastam. O cron do próprio GitHub atrasa horas. Use o [cron-job.org](https://cron-job.org) (grátis) para disparar o workflow:
+O bot publica **uma arte por execução**, então o gatilho precisa ser mais frequente que o intervalo do `pace.json`, de preferência um divisor dele. Com `interval_minutes` em 6 (o ritmo atual), use **3 minutos**: a arte seguinte sai exatamente 6 minutos depois da anterior. Regra geral: o gatilho é metade do intervalo (6 → 3, 8 → 2, 10 → 5). Um gatilho que não divide o intervalo estica o ritmo (por exemplo, 6 com gatilho de 4 minutos viraria 8). Com intervalos de 20 minutos ou mais, 5 a 10 minutos bastam. O cron do próprio GitHub atrasa horas. Use o [cron-job.org](https://cron-job.org) (grátis) para disparar o workflow:
 
 1. GitHub → *Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate*:
    - *Repository access*: **Only select repositories** → só `Peixoto-Variedades-Stories`;
    - *Permissions → Repository → Actions*: **Read and write**.
 2. No cron-job.org, **Create cronjob**:
    - URL: `https://api.github.com/repos/<seu-usuario>/Peixoto-Variedades-Stories/actions/workflows/stories.yml/dispatches`
-   - Schedule: **a cada 2 minutos** (o cron-job.org grátis aceita intervalos de 1 minuto)
+   - Schedule: **a cada 3 minutos** (o cron-job.org grátis aceita intervalos de 1 minuto)
    - *Advanced*: método **POST**; cabeçalhos `Authorization: Bearer <token fine-grained>`, `Accept: application/vnd.github+json`, `X-GitHub-Api-Version: 2022-11-28`; corpo `{"ref":"main"}`.
 3. Resposta esperada: **204**.
 
 ## 6. Primeiro teste
 
-1. Confira o ritmo em `pace.json` (atual: segunda a sábado, das 08:00 às 20:00, uma arte a cada 8 minutos, até 89 por dia).
+1. Confira o ritmo em `pace.json` (atual: segunda a sábado, das 08:00 às 20:00, uma arte a cada 6 minutos, até 89 por dia).
 2. Mande **uma** arte 1080×1920 ao bot como **arquivo**. Em poucos minutos ele responde "Recebi 1 arte(s)". Se ela for postada ao vivo, ela aparece no Instagram da loja; por isso teste com uma arte que você realmente queira publicar.
 3. `/fila` mostra o que está na fila; `/remover N` tira um item.
 
 ## 7. Colocar o pacote diário no ar
 
-O `pace.json` está no modo de rodízio (`"recycle": true`): cada arte volta ao fim da fila depois de postada e continua guardada no R2, então o mesmo pacote roda todo dia, de segunda a sábado, das 08:00 às 20:00, uma arte a cada 8 minutos.
+O `pace.json` está no modo de rodízio (`"recycle": true`): cada arte volta ao fim da fila depois de postada e continua guardada no R2, então o mesmo pacote roda todo dia, de segunda a sábado, das 08:00 às 20:00, uma arte a cada 6 minutos (as 89 artes saem entre 08:00 e ~16:54).
 
-1. Gatilho do passo 5 funcionando (a cada 2 minutos).
+1. Gatilho do passo 5 funcionando (a cada 3 minutos).
 2. No Telegram, abra o bot, clique no clipe, escolha **Arquivo** e selecione **todas** as imagens da pasta `arts/pacote` (a numeração `01-…` a `89-…` define a ordem). Confirme o envio **como arquivos**, sem comprimir.
 3. Em alguns minutos o bot responde "Recebi N arte(s)". Mande `/fila` para conferir o total.
 4. Faça isso **fora do horário** (por exemplo, no domingo ou à noite): as artes só entram na fila e a primeira sai na abertura seguinte, às 08:00.
