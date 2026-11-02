@@ -34,6 +34,24 @@ def test_first_story_of_the_day_goes_out_at_opening(pace):
     assert may_publish(pace, at(9, 0), posted_at(at(20, 50, day=8)))
 
 
+def test_days_default_to_every_day_and_can_skip_sunday():
+    every_day = parse_pace({})
+    mon_to_sat = parse_pace({"days": ["mon", "tue", "wed", "thu", "fri", "sat"]})
+    sunday, saturday = at(10, 0, day=11), at(10, 0, day=10)  # 11 Oct 2026 is a Sunday
+
+    assert may_publish(every_day, sunday, {})
+    assert may_publish(mon_to_sat, saturday, {})
+    assert not may_publish(mon_to_sat, sunday, {})
+
+
+def test_weekday_is_judged_in_local_time():
+    pace = parse_pace({"days": ["sat"], "end": "23:59"})
+    # 22:00 local on Saturday is already Sunday in UTC; it still counts as Saturday.
+    saturday_night = at(22, 0, day=10).astimezone(ZoneInfo("UTC"))
+    assert saturday_night.weekday() == 6
+    assert may_publish(pace, saturday_night, {})
+
+
 def test_nothing_outside_the_window(pace):
     assert not may_publish(pace, at(8, 59), {})
     assert not may_publish(pace, at(21, 0), {})
@@ -71,6 +89,9 @@ def test_daily_limit_uses_local_time_not_utc(pace):
         {"timezone": "Mars/Base"},
         {"start": "9am"},
         {"start": "21:00", "end": "09:00"},
+        {"days": []},
+        {"days": ["monday"]},
+        {"days": "mon"},
         {"interval_minutes": 0},
         {"interval_minutes": True},
         {"daily_limit": 500},

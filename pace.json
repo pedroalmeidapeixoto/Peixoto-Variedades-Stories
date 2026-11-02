@@ -1,5 +1,6 @@
 {
   "timezone": "America/Sao_Paulo",
+  "days": ["mon", "tue", "wed", "thu", "fri", "sat"],
   "start": "09:00",
   "end": "21:00",
   "interval_minutes": 60,

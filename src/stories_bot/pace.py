@@ -1,4 +1,4 @@
-"""Pacing rules: during which hours, how far apart, and how many Stories a day."""
+"""Pacing rules: on which days and hours, how far apart, and how many Stories a day."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
+WEEKDAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")  # index == date.weekday()
 DEFAULT_TIMEZONE = "America/Sao_Paulo"
 # Instagram allows 100 API-published posts per rolling 24 hours; stay well under it.
 MAX_DAILY_LIMIT = 90
@@ -24,6 +25,7 @@ class Pace:
     timezone: ZoneInfo
     start: time
     end: time
+    days: frozenset[str]  # weekdays on which Stories go out
     interval: timedelta
     daily_limit: int
     low_queue: int  # warn when this many Stories are left
@@ -57,10 +59,15 @@ def parse_pace(data: Any) -> Pace:
     if end <= start:
         raise PaceError("'end' must be later than 'start'")
 
+    days = data.get("days", list(WEEKDAYS))
+    if not isinstance(days, list) or not days or not set(days) <= set(WEEKDAYS):
+        raise PaceError(f"'days' must be a non-empty list of {list(WEEKDAYS)}")
+
     return Pace(
         timezone=tz,
         start=start,
         end=end,
+        days=frozenset(days),
         interval=timedelta(minutes=_parse_int(data, "interval_minutes", 20, 1, 24 * 60)),
         daily_limit=_parse_int(data, "daily_limit", 60, 1, MAX_DAILY_LIMIT),
         low_queue=_parse_int(data, "low_queue", 10, 0, 1000),
@@ -84,6 +91,8 @@ def may_publish(pace: Pace, now: datetime, posted: Mapping[str, Mapping[str, Any
     A late trigger therefore delays Stories; it can never dump a backlog at once.
     """
     now = now.astimezone(pace.timezone)
+    if WEEKDAYS[now.weekday()] not in pace.days:
+        return False
     if not pace.start <= now.time().replace(tzinfo=None) < pace.end:
         return False
 

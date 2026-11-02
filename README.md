@@ -45,10 +45,11 @@ flowchart LR
 ```json
 {
   "timezone": "America/Sao_Paulo",
+  "days": ["mon", "tue", "wed", "thu", "fri", "sat"],
   "start": "09:00",
   "end": "21:00",
-  "interval_minutes": 20,
-  "daily_limit": 36,
+  "interval_minutes": 60,
+  "daily_limit": 12,
   "low_queue": 10,
   "notify_each": false
 }
@@ -56,6 +57,7 @@ flowchart LR
 
 | Field | Meaning |
 |---|---|
+| `days` | Weekdays (`mon tue wed thu fri sat sun`) on which Stories go out. Default: every day. |
 | `start` / `end` | Stories only go out inside this local window. |
 | `interval_minutes` | Minimum gap since the last Story. With a 10-minute trigger the real gap is 20–30 min. |
 | `daily_limit` | Max Stories per local day (Instagram allows 100 API posts per 24 h; the cap here is 90). |
