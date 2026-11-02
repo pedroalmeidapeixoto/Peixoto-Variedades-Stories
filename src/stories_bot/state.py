@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -23,9 +23,24 @@ def write_json(path: Path, data: Any) -> None:
     tmp.replace(path)
 
 
-def record_post(path: Path, item_id: str, name: str, media_id: str, at: datetime) -> None:
+def record_post(
+    path: Path,
+    item_id: str,
+    name: str,
+    media_id: str,
+    at: datetime,
+    *,
+    keep_days: int | None = None,
+) -> None:
+    """Record a published Story. With `keep_days`, older records are dropped (a recycled queue
+    posts dozens a day for ever, so the file would otherwise grow without bound)."""
     posted = load_posted(path)
     posted[item_id] = {"name": name, "media_id": media_id, "posted_at": at.isoformat()}
+    if keep_days is not None:
+        cutoff = at - timedelta(days=keep_days)
+        posted = {
+            k: v for k, v in posted.items() if datetime.fromisoformat(v["posted_at"]) >= cutoff
+        }
     write_json(path, posted)
 
 

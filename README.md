@@ -61,6 +61,7 @@ flowchart LR
 | `start` / `end` | Stories only go out inside this local window. |
 | `interval_minutes` | Minimum gap since the last Story. One Story goes out per run, so the trigger must be more frequent than this (e.g. every 3 min for a 6 min interval); a 90 s slack absorbs early runs. |
 | `daily_limit` | Max Stories per local day (Instagram allows 100 API posts per 24 h; the cap here is 90). |
+| `recycle` | `true` turns the queue into a **daily pack**: a published art goes back to the end of the queue (and stays in the bucket) instead of leaving it, so the same products run again every day. Off by default. `low_queue` alerts are skipped in this mode. |
 | `low_queue` | Telegram alert when this many Stories are left (and another when the queue runs out). |
 | `notify_each` | Also message on every published Story (off by default: dozens a day is noisy). Failures always notify. |
 
@@ -85,6 +86,22 @@ stories-enqueue promo.jpg --front
 ```
 
 Then commit `state/queue.json`.
+
+## Preparing arts (`tools/prepare_arts.py`)
+
+Instagram covers about 250 px at the top and bottom of every Story. The tool takes finished
+arts of any proportion (9:16, 3:4, 2:3…) and turns each into a 1080×1920 JPG that sits inside
+that safe area, framed in the art's own edge colour so it reads as a card.
+
+```bash
+pip install pillow numpy
+python tools/prepare_arts.py raw-arts/ arts/pack --manifest manifest.json
+```
+
+The optional manifest is an ordered list such as `[{"file": "IMG_001.jpeg", "name": "chivas-regal-12"}]`
+(add `"frame": "cream"` or `"#rrggbb"` to override the frame colour). Output files are named
+`01-chivas-regal-12.jpg`, `02-…`, so sorting by name gives the posting order. Then queue them
+with `stories-enqueue arts/pack/`, or send them to the Telegram bot as files.
 
 ## Quick start
 

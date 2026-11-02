@@ -87,6 +87,21 @@ def remove_item(path: Path, item_id: str) -> QueueItem | None:
     return removed
 
 
+def recycle_item(path: Path, item_id: str, new_id: str) -> bool:
+    """Send an item to the back of the queue under a fresh id (its art stays in storage).
+
+    The id changes because posted Stories are recorded by id: the next lap of the same art
+    must not look like one that was already posted.
+    """
+    items = load_queue(path)
+    item = next((i for i in items if i.id == item_id), None)
+    if item is None:
+        return False
+    again = QueueItem(**{**asdict(item), "id": new_id, "attempts": 0})
+    save_queue(path, [*(i for i in items if i.id != item_id), again])
+    return True
+
+
 def record_attempt(path: Path, failed_path: Path, item_id: str, error: str) -> bool:
     """Count a failed attempt. After MAX_ATTEMPTS the item moves to the failed list.
 

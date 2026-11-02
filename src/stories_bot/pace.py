@@ -31,6 +31,7 @@ class Pace:
     daily_limit: int
     low_queue: int  # warn when this many Stories are left
     notify_each: bool  # message on every published Story, not only on problems
+    recycle: bool  # a published art goes back to the end of the queue instead of leaving it
 
 
 def _parse_time(raw: Any, field: str) -> time:
@@ -73,6 +74,7 @@ def parse_pace(data: Any) -> Pace:
         daily_limit=_parse_int(data, "daily_limit", 60, 1, MAX_DAILY_LIMIT),
         low_queue=_parse_int(data, "low_queue", 10, 0, 1000),
         notify_each=bool(data.get("notify_each", False)),
+        recycle=bool(data.get("recycle", False)),
     )
 
 

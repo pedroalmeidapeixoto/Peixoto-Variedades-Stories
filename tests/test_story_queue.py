@@ -8,6 +8,7 @@ from stories_bot.story_queue import (
     add_art,
     load_queue,
     record_attempt,
+    recycle_item,
     remove_item,
 )
 
@@ -62,6 +63,17 @@ def test_remove_item(tmp_path, storage):
     assert remove_item(queue, a.id) == a
     assert [i.id for i in load_queue(queue)] == [b.id]
     assert remove_item(queue, "ghost") is None
+
+
+def test_recycle_item_moves_it_to_the_back_with_a_new_id_and_clean_attempts(tmp_path, storage):
+    queue, failed = tmp_path / "queue.json", tmp_path / "failed.json"
+    a, b = add(storage, queue, "a"), add(storage, queue, "b")
+    record_attempt(queue, failed, a.id, "HTTP 400")  # a has one failed attempt
+
+    assert recycle_item(queue, a.id, "lap2") is True
+    items = load_queue(queue)
+    assert [(i.id, i.key, i.attempts) for i in items] == [(b.id, b.key, 0), ("lap2", a.key, 0)]
+    assert recycle_item(queue, "ghost", "x") is False
 
 
 def test_item_is_set_aside_after_repeated_failures(tmp_path, storage):

@@ -199,6 +199,83 @@ def test_notifications_follow_the_queue_level(project, storage, monkeypatch, sen
     assert sent[-1].startswith("⚠️ A fila de Stories acabou")
 
 
+def recycle_pace(project, **extra):
+    (project / "pace.json").write_text(
+        json.dumps({"recycle": True, "interval_minutes": 6, **extra})
+    )
+
+
+def test_recycle_sends_the_art_to_the_back_and_keeps_it_in_storage(project, storage, monkeypatch):
+    configure(monkeypatch)
+    recycle_pace(project)
+    first, second = enqueue(project, storage, "a", "b")
+    fake_publish(monkeypatch)
+
+    assert run(project, "2026-10-09T10:00") == cli.EXIT_OK
+    queue = load_queue(project / "state" / "queue.json")
+    assert [i.key for i in queue] == [second.key, first.key]  # a went to the back
+    assert queue[1].id == f"{first.id}@20261009100000"  # fresh id for the next lap
+    assert posted(project)[first.id]["media_id"] == "m1"
+    assert storage.deleted == [] and first.key in storage.objects  # the art stays in the bucket
+
+
+def test_recycle_loops_through_the_whole_pack_and_starts_again(project, storage, monkeypatch):
+    configure(monkeypatch)
+    recycle_pace(project)
+    enqueue(project, storage, "a", "b")
+    calls = []
+    fake_publish(monkeypatch, calls=calls)
+
+    for minute in (0, 6, 12, 18):
+        assert run(project, f"2026-10-09T10:{minute:02d}") == cli.EXIT_OK
+    urls = [url.rsplit("-", 1)[-1] for url, _ in calls]
+    assert urls == ["a.jpg", "b.jpg", "a.jpg", "b.jpg"]  # a, b, a, b: the same art twice
+    assert len(load_queue(project / "state" / "queue.json")) == 2
+
+
+def test_recycle_never_warns_about_the_queue_running_out(project, storage, monkeypatch, sent):
+    configure(monkeypatch)
+    recycle_pace(project, low_queue=1)
+    enqueue(project, storage, "a", "b")
+    fake_publish(monkeypatch)
+
+    assert run(project) == cli.EXIT_OK
+    assert sent == []
+
+
+def test_recycle_rescues_an_item_whose_run_died_after_posting(project, storage, monkeypatch):
+    configure(monkeypatch)
+    recycle_pace(project)
+    ghost, nxt = enqueue(project, storage, "ghost", "next")
+    (project / "state" / "posted.json").write_text(
+        json.dumps(
+            {ghost.id: {"name": "x", "media_id": "m0", "posted_at": "2026-10-08T10:00:00-03:00"}}
+        )
+    )
+    calls = []
+    fake_publish(monkeypatch, calls=calls)
+
+    assert run(project) == cli.EXIT_OK
+    assert [c[0] for c in calls] == [f"https://cdn.example/{nxt.key}"]  # no repeat of the ghost
+    keys = [i.key for i in load_queue(project / "state" / "queue.json")]
+    assert sorted(keys) == sorted([ghost.key, nxt.key])  # the ghost was kept, not dropped
+
+
+def test_recycle_forgets_old_post_records(project, storage, monkeypatch):
+    configure(monkeypatch)
+    recycle_pace(project)
+    enqueue(project, storage, "a")
+    (project / "state" / "posted.json").write_text(
+        json.dumps(
+            {"old": {"name": "x", "media_id": "m0", "posted_at": "2026-09-01T10:00:00-03:00"}}
+        )
+    )
+    fake_publish(monkeypatch)
+
+    assert run(project) == cli.EXIT_OK
+    assert "old" not in posted(project) and len(posted(project)) == 1
+
+
 def test_notify_each_publish_when_enabled(project, storage, monkeypatch, sent):
     configure(monkeypatch)
     (project / "pace.json").write_text(json.dumps({"notify_each": True, "low_queue": 0}))

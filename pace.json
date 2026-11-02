@@ -4,7 +4,8 @@
   "start": "09:00",
   "end": "21:00",
   "interval_minutes": 6,
-  "daily_limit": 90,
+  "daily_limit": 88,
+  "recycle": true,
   "low_queue": 30,
   "notify_each": false
 }

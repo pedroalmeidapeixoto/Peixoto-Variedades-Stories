@@ -34,6 +34,11 @@ def test_first_story_of_the_day_goes_out_at_opening(pace):
     assert may_publish(pace, at(9, 0), posted_at(at(20, 50, day=8)))
 
 
+def test_recycle_is_off_by_default():
+    assert parse_pace({}).recycle is False
+    assert parse_pace({"recycle": True}).recycle is True
+
+
 def test_days_default_to_every_day_and_can_skip_sunday():
     every_day = parse_pace({})
     mon_to_sat = parse_pace({"days": ["mon", "tue", "wed", "thu", "fri", "sat"]})

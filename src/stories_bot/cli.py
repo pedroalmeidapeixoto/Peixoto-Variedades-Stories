@@ -15,11 +15,12 @@ from .notify import TelegramNotifier
 from .pace import PaceError, load_pace, may_publish
 from .state import load_posted, record_post
 from .storage import R2Storage, Storage, StorageError
-from .story_queue import load_queue, record_attempt, remove_item
+from .story_queue import load_queue, record_attempt, recycle_item, remove_item
 
 log = logging.getLogger("stories_bot")
 
 EXIT_OK, EXIT_FAILED, EXIT_BAD_SETUP = 0, 1, 2
+RECYCLE_HISTORY_DAYS = 7  # how long posted Stories are remembered when the queue is recycled
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -45,6 +46,11 @@ def build_storage(settings: R2Settings) -> Storage:
     return R2Storage(settings)
 
 
+def _next_lap_id(item_id: str, now: datetime) -> str:
+    """`<original id>@<time of this post>`: unique per lap, and the original id stays readable."""
+    return f"{item_id.split('@')[0]}@{now:%Y%m%d%H%M%S}"
+
+
 def _notify(notifier: TelegramNotifier | None, text: str) -> None:
     if notifier is not None:
         notifier.send(text)
@@ -65,8 +71,11 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     # An item recorded as posted but still queued means a run died between the two writes.
     for stale in [i for i in load_queue(args.queue) if i.id in posted]:
-        log.warning("%s was already posted; removing it from the queue", stale.name)
-        remove_item(args.queue, stale.id)
+        log.warning("%s was already posted; moving it out of the way", stale.name)
+        if pace.recycle:
+            recycle_item(args.queue, stale.id, _next_lap_id(stale.id, now))
+        else:
+            remove_item(args.queue, stale.id)
 
     queue = load_queue(args.queue)
     if not queue:
@@ -107,17 +116,29 @@ def main(argv: Sequence[str] | None = None) -> int:
         _notify(notifier, f"❌ Falha ao publicar {item.name}: {exc}.{suffix}")
         return EXIT_FAILED
 
-    record_post(args.state, item.id, item.name, media_id, now)
-    remove_item(args.queue, item.id)
+    record_post(
+        args.state,
+        item.id,
+        item.name,
+        media_id,
+        now,
+        keep_days=RECYCLE_HISTORY_DAYS if pace.recycle else None,
+    )
     log.info("Published %s (media id %s)", item.name, media_id)
-    try:
-        storage.delete(item.key)  # Meta already has its copy; keep the bucket small
-    except StorageError as exc:
-        log.warning("Could not delete %s from storage: %s", item.key, exc)
+    if pace.recycle:
+        recycle_item(args.queue, item.id, _next_lap_id(item.id, now))  # the art stays in storage
+    else:
+        remove_item(args.queue, item.id)
+        try:
+            storage.delete(item.key)  # Meta already has its copy; keep the bucket small
+        except StorageError as exc:
+            log.warning("Could not delete %s from storage: %s", item.key, exc)
 
     remaining = len(queue) - 1
     if pace.notify_each:
         _notify(notifier, f"✅ Story publicado: {item.name} ({now:%d/%m %H:%M}). Fila: {remaining}")
+    if pace.recycle:
+        return EXIT_OK  # the queue never runs dry, so there is nothing to warn about
     if remaining == 0:
         _notify(notifier, "⚠️ A fila de Stories acabou. Mande mais artes para o bot.")
     elif remaining == pace.low_queue:
