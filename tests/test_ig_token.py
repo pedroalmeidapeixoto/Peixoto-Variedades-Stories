@@ -69,6 +69,14 @@ def test_ig_api_setting_selects_the_host():
         InstagramSettings.from_env({**base, "IG_API": "tiktok"})
 
 
+def test_ig_api_is_guessed_from_the_token_when_unset():
+    ids = {"IG_USER_ID": "1"}
+    assert InstagramSettings.from_env({**ids, "IG_ACCESS_TOKEN": "IGAAxyz"}).api == "instagram"
+    assert InstagramSettings.from_env({**ids, "IG_ACCESS_TOKEN": "EAAxyz"}).api == "facebook"
+    explicit = {**ids, "IG_ACCESS_TOKEN": "IGAAxyz", "IG_API": "facebook"}
+    assert InstagramSettings.from_env(explicit).api == "facebook"  # explicit wins
+
+
 @responses.activate
 def test_client_publishes_through_the_instagram_login_host():
     responses.post(f"{INSTAGRAM_LOGIN_URL}/17841/media", json={"id": "c1"})

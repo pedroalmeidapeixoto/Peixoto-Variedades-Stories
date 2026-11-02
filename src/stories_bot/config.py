@@ -31,7 +31,10 @@ class InstagramSettings:
     def from_env(cls, environ: Mapping[str, str] | None = None) -> InstagramSettings:
         env = os.environ if environ is None else environ
         values = _require(env, ("IG_USER_ID", "IG_ACCESS_TOKEN"))
-        api = env.get("IG_API", "").strip().lower() or "facebook"
+        # Without IG_API, tell the two token kinds apart: Instagram Login tokens start with
+        # "IG", Facebook ones with "EAA".
+        guessed = "instagram" if values["IG_ACCESS_TOKEN"].startswith("IG") else "facebook"
+        api = env.get("IG_API", "").strip().lower() or guessed
         if api not in API_URLS:
             raise ConfigError(f"IG_API must be one of {sorted(API_URLS)}, got {api!r}")
         return cls(values["IG_USER_ID"], values["IG_ACCESS_TOKEN"], api)
