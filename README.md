@@ -97,7 +97,7 @@ stories-bot --dry-run --now 2026-10-09T10:00        # preview the next Story
 
 See [`docs/SETUP.pt-BR.md`](docs/SETUP.pt-BR.md). In short:
 
-1. Instagram Professional account linked to a Facebook Page; Meta app; `stories-token` prints `IG_USER_ID` and a ~60-day `IG_ACCESS_TOKEN`.
+1. Instagram Professional account linked to a Facebook Page; Meta app; `stories-token` prints `IG_USER_ID` and a ~60-day `IG_ACCESS_TOKEN`. Without a Page, use the **Instagram Login** mode instead: `stories-token-ig` and the repository variable `IG_API=instagram` (see the setup guide).
 2. Cloudflare R2 bucket with public access and an S3 API token.
 3. GitHub repository with the secrets: `IG_USER_ID`, `IG_ACCESS_TOKEN`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, `R2_PUBLIC_URL`, and optionally `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
 4. An external scheduler (cron-job.org) calling `workflow_dispatch` every ~10 minutes, because GitHub's own cron is not punctual.
@@ -127,7 +127,8 @@ src/stories_bot/
   telegram.py     Bot API client (token never reaches logs)
   media.py        PNG/JPEG size check for the 9:16 warning
   config.py       environment-based settings
-  token_setup.py  `stories-token` helper
+  token_setup.py  `stories-token` helper (Page-linked accounts)
+  ig_token.py     `stories-token-ig` helper (Instagram Login, no Page)
 tests/            pytest suite (HTTP and storage mocked)
 .github/workflows/
   ci.yml          ruff, mypy, pytest on Python 3.10–3.12

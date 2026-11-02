@@ -19,6 +19,25 @@ Faça na ordem. **Nunca cole tokens ou senhas em chats**: cada valor vai direto 
 
    Informe App ID, App Secret e o token curto. Ele imprime o `IG_USER_ID` e o `IG_ACCESS_TOKEN` (válido ~60 dias). Guarde-os para o passo 4 e limpe o terminal.
 
+### 1-B. Alternativa sem Página: login do Instagram
+
+Use se o vínculo da Página com o Instagram não funcionar (por exemplo, conta comercial da Meta restrita). Só exige que a conta do Instagram seja profissional. Os nomes dos menus da Meta mudam de vez em quando, então procure por equivalentes.
+
+1. No app da Meta, abra o caso de uso *Gerenciar mensagens e conteúdo no Instagram* e escolha **Configuração da API com login do Instagram**. Confira que as permissões `instagram_business_basic` e `instagram_business_content_publish` estão disponíveis.
+2. Adicione a conta como **testadora** do app: *Funções do app → Funções → Adicionar pessoas → Testadores do Instagram*, com o usuário `@peixotovariedadescg`.
+3. No Instagram da loja (app ou web), aceite o convite: *Configurações → Apps e sites → Convites de testador*.
+4. De volta à configuração da API com login do Instagram, em **Gerar tokens de acesso**, adicione a conta e clique em **Gerar token**. Copie o token.
+5. No terminal, na pasta do projeto:
+
+   ```bash
+   .venv\Scripts\stories-token-ig.exe
+   ```
+
+   Cole o token. Se informar o App Secret, ele troca por um token de 60 dias; se deixar em branco, tenta renovar o token. No final imprime o `IG_USER_ID` e o `IG_ACCESS_TOKEN`.
+6. No GitHub, cadastre `IG_USER_ID` e `IG_ACCESS_TOKEN` como secrets e crie a **variável** (não secret) `IG_API` com o valor `instagram`, em *Settings → Secrets and variables → Actions → Variables*.
+
+Renovação: antes dos 60 dias, rode `stories-token-ig` de novo, cole o token atual e deixe o App Secret em branco para renovar (o token precisa ter mais de 24 h). Atualize o secret `IG_ACCESS_TOKEN`.
+
 ## 2. Cloudflare R2 (onde ficam as artes)
 
 1. Crie uma conta em [dash.cloudflare.com](https://dash.cloudflare.com) e abra **R2 Object Storage**. O R2 pede um cartão cadastrado, mas o plano grátis (10 GB) basta: as artes são apagadas depois de postadas.

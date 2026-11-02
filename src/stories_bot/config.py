@@ -6,6 +6,8 @@ import os
 from collections.abc import Mapping
 from dataclasses import dataclass
 
+from .instagram import API_URLS
+
 
 class ConfigError(RuntimeError):
     """Required configuration is missing."""
@@ -23,12 +25,16 @@ def _require(env: Mapping[str, str], names: tuple[str, ...]) -> dict[str, str]:
 class InstagramSettings:
     user_id: str
     access_token: str
+    api: str = "facebook"  # "facebook" (Page-linked) or "instagram" (Instagram Login)
 
     @classmethod
     def from_env(cls, environ: Mapping[str, str] | None = None) -> InstagramSettings:
         env = os.environ if environ is None else environ
         values = _require(env, ("IG_USER_ID", "IG_ACCESS_TOKEN"))
-        return cls(values["IG_USER_ID"], values["IG_ACCESS_TOKEN"])
+        api = env.get("IG_API", "").strip().lower() or "facebook"
+        if api not in API_URLS:
+            raise ConfigError(f"IG_API must be one of {sorted(API_URLS)}, got {api!r}")
+        return cls(values["IG_USER_ID"], values["IG_ACCESS_TOKEN"], api)
 
 
 @dataclass(frozen=True)

@@ -10,7 +10,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from .config import ConfigError, InstagramSettings, R2Settings
-from .instagram import InstagramClient, InstagramError
+from .instagram import API_URLS, InstagramClient, InstagramError
 from .notify import TelegramNotifier
 from .pace import PaceError, load_pace, may_publish
 from .state import load_posted, record_post
@@ -92,7 +92,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         _notify(notifier, f"❌ Story não publicado: configuração incompleta ({exc}).")
         return EXIT_BAD_SETUP
 
-    client = InstagramClient(instagram.user_id, instagram.access_token)
+    client = InstagramClient(
+        instagram.user_id, instagram.access_token, base_url=API_URLS[instagram.api]
+    )
     try:
         media_id = client.publish_story(storage.public_url(item.key), is_video=item.is_video)
     except InstagramError as exc:
