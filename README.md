@@ -58,6 +58,7 @@ flowchart LR
 | Field | Meaning |
 |---|---|
 | `days` | Weekdays (`mon tue wed thu fri sat sun`) on which Stories go out. Default: every day. |
+| `skip_dates` | Dates (`YYYY-MM-DD`) with no Stories at all, such as holidays. The queue just waits. |
 | `start` / `end` | Stories only go out inside this local window. |
 | `interval_minutes` | Minimum gap since the last Story. One Story goes out per run, so the trigger must be more frequent than this (e.g. every 3 min for a 6 min interval); a 90 s slack absorbs early runs. |
 | `daily_limit` | Max Stories per local day (Instagram allows 100 API posts per 24 h; the cap here is 90). |

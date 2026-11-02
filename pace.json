@@ -1,6 +1,7 @@
 {
   "timezone": "America/Sao_Paulo",
   "days": ["mon", "tue", "wed", "thu", "fri", "sat"],
+  "skip_dates": ["2026-11-02"],
   "start": "08:00",
   "end": "20:00",
   "interval_minutes": 8,

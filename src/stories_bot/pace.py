@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from collections.abc import Mapping
 from dataclasses import dataclass
-from datetime import datetime, time, timedelta
+from datetime import date, datetime, time, timedelta
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
@@ -27,6 +27,7 @@ class Pace:
     start: time
     end: time
     days: frozenset[str]  # weekdays on which Stories go out
+    skip_dates: frozenset[date]  # holidays and other days with no Stories at all
     interval: timedelta
     daily_limit: int
     low_queue: int  # warn when this many Stories are left
@@ -65,11 +66,20 @@ def parse_pace(data: Any) -> Pace:
     if not isinstance(days, list) or not days or not set(days) <= set(WEEKDAYS):
         raise PaceError(f"'days' must be a non-empty list of {list(WEEKDAYS)}")
 
+    raw_skips = data.get("skip_dates", [])
+    if not isinstance(raw_skips, list):
+        raise PaceError("'skip_dates' must be a list of YYYY-MM-DD dates")
+    try:
+        skip_dates = frozenset(date.fromisoformat(str(d)) for d in raw_skips)
+    except ValueError:
+        raise PaceError("'skip_dates' must be a list of YYYY-MM-DD dates") from None
+
     return Pace(
         timezone=tz,
         start=start,
         end=end,
         days=frozenset(days),
+        skip_dates=skip_dates,
         interval=timedelta(minutes=_parse_int(data, "interval_minutes", 20, 1, 24 * 60)),
         daily_limit=_parse_int(data, "daily_limit", 60, 1, MAX_DAILY_LIMIT),
         low_queue=_parse_int(data, "low_queue", 10, 0, 1000),
@@ -97,7 +107,7 @@ def may_publish(pace: Pace, now: datetime, posted: Mapping[str, Mapping[str, Any
     whole trigger period away, so GRACE of slack is allowed.
     """
     now = now.astimezone(pace.timezone)
-    if WEEKDAYS[now.weekday()] not in pace.days:
+    if WEEKDAYS[now.weekday()] not in pace.days or now.date() in pace.skip_dates:
         return False
     if not pace.start <= now.time().replace(tzinfo=None) < pace.end:
         return False

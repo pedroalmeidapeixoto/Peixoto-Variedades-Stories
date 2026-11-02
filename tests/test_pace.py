@@ -34,6 +34,20 @@ def test_first_story_of_the_day_goes_out_at_opening(pace):
     assert may_publish(pace, at(9, 0), posted_at(at(20, 50, day=8)))
 
 
+def test_skip_dates_silence_a_whole_day_and_only_that_day():
+    pace = parse_pace({"skip_dates": ["2026-10-09"]})
+    assert not may_publish(pace, at(10, 0, day=9), {})
+    assert not may_publish(pace, at(20, 0, day=9), {})
+    assert may_publish(pace, at(10, 0, day=10), {})  # the next day is normal
+    assert parse_pace({}).skip_dates == frozenset()
+
+
+def test_skip_date_is_judged_in_local_time():
+    pace = parse_pace({"skip_dates": ["2026-10-09"], "end": "23:59"})
+    friday_night = at(22, 0, day=9).astimezone(ZoneInfo("UTC"))  # Saturday already in UTC
+    assert not may_publish(pace, friday_night, {})
+
+
 def test_recycle_is_off_by_default():
     assert parse_pace({}).recycle is False
     assert parse_pace({"recycle": True}).recycle is True
@@ -107,6 +121,8 @@ def test_daily_limit_uses_local_time_not_utc(pace):
         {"timezone": "Mars/Base"},
         {"start": "9am"},
         {"start": "21:00", "end": "09:00"},
+        {"skip_dates": "2026-10-09"},
+        {"skip_dates": ["09/10/2026"]},
         {"days": []},
         {"days": ["monday"]},
         {"days": "mon"},
