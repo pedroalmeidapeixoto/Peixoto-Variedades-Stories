@@ -15,7 +15,7 @@ It shares its core with the restaurant bot (`O-Grande-Mestre-Posts`), but swaps 
 flowchart LR
     you["You<br/>(Telegram or stories-enqueue)"] -->|"ready 9:16 arts"| r2[("Cloudflare R2<br/>public bucket")]
     you --> queue[("state/queue.json")]
-    trigger["External scheduler<br/>every ~10 min"] -->|"workflow_dispatch"| bot["stories-bot"]
+    trigger["External scheduler<br/>every few min"] -->|"workflow_dispatch"| bot["stories-bot"]
     queue <--> bot
     pace[("pace.json")] --> bot
     bot -->|"1. container (public URL)<br/>2. poll<br/>3. media_publish"| api["Instagram Graph API"]
@@ -59,7 +59,7 @@ flowchart LR
 |---|---|
 | `days` | Weekdays (`mon tue wed thu fri sat sun`) on which Stories go out. Default: every day. |
 | `start` / `end` | Stories only go out inside this local window. |
-| `interval_minutes` | Minimum gap since the last Story. With a 10-minute trigger the real gap is 20–30 min. |
+| `interval_minutes` | Minimum gap since the last Story. One Story goes out per run, so the trigger must be more frequent than this (e.g. every 3 min for a 6 min interval); a 90 s slack absorbs early runs. |
 | `daily_limit` | Max Stories per local day (Instagram allows 100 API posts per 24 h; the cap here is 90). |
 | `low_queue` | Telegram alert when this many Stories are left (and another when the queue runs out). |
 | `notify_each` | Also message on every published Story (off by default: dozens a day is noisy). Failures always notify. |
@@ -102,14 +102,14 @@ See [`docs/SETUP.pt-BR.md`](docs/SETUP.pt-BR.md). In short:
 1. Instagram Professional account linked to a Facebook Page; Meta app; `stories-token` prints `IG_USER_ID` and a ~60-day `IG_ACCESS_TOKEN`. Without a Page, use the **Instagram Login** mode instead: `stories-token-ig` and the repository variable `IG_API=instagram` (see the setup guide).
 2. Cloudflare R2 bucket with public access and an S3 API token.
 3. GitHub repository with the secrets: `IG_USER_ID`, `IG_ACCESS_TOKEN`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, `R2_PUBLIC_URL`, and optionally `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
-4. An external scheduler (cron-job.org) calling `workflow_dispatch` every ~10 minutes, because GitHub's own cron is not punctual.
+4. An external scheduler (cron-job.org) calling `workflow_dispatch` every few minutes (half the pace interval or less), because GitHub's own cron is not punctual.
 
 > **Token renewal:** the long-lived token expires after ~60 days. When it does, the bot stops, sends a Telegram alert and keeps the queue intact. Run `stories-token` again and update the `IG_ACCESS_TOKEN` secret.
 
 ## Limitations
 
 - The API cannot add interactive stickers (link, poll, mention): put any text inside the art.
-- Keep the repository **public**: it only holds the queue (file names), and public repositories get unlimited Actions minutes, which a 10-minute trigger needs.
+- Keep the repository **public**: it only holds the queue (file names), and public repositories get unlimited Actions minutes, which a trigger every few minutes needs.
 - GitHub pauses scheduled workflows after 60 days without repository activity; here every post commits, so that does not happen while the queue is in use.
 
 ## Project layout

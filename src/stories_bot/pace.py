@@ -14,6 +14,7 @@ WEEKDAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")  # index == date.we
 DEFAULT_TIMEZONE = "America/Sao_Paulo"
 # Instagram allows 100 API-published posts per rolling 24 hours; stay well under it.
 MAX_DAILY_LIMIT = 90
+GRACE = timedelta(seconds=90)
 
 
 class PaceError(ValueError):
@@ -89,6 +90,9 @@ def may_publish(pace: Pace, now: datetime, posted: Mapping[str, Mapping[str, Any
     The trigger (an external scheduler, or GitHub's own cron) is not punctual, so this only
     ever allows ONE Story per run, and only when `interval` has passed since the last one.
     A late trigger therefore delays Stories; it can never dump a backlog at once.
+
+    A run that starts a few seconds early would otherwise miss the slot and push the Story a
+    whole trigger period away, so GRACE of slack is allowed.
     """
     now = now.astimezone(pace.timezone)
     if WEEKDAYS[now.weekday()] not in pace.days:
@@ -100,4 +104,5 @@ def may_publish(pace: Pace, now: datetime, posted: Mapping[str, Mapping[str, Any
     today = sum(1 for t in times if t.astimezone(pace.timezone).date() == now.date())
     if today >= pace.daily_limit:
         return False
-    return not times or now - max(times) >= pace.interval
+    wait = pace.interval - min(GRACE, pace.interval / 4)
+    return not times or now - max(times) >= wait

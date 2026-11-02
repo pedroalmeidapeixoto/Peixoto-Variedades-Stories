@@ -3,7 +3,7 @@ name: Publish Stories
 on:
   schedule:
     # Fallback only: GitHub's own cron can run hours apart. The real trigger is an external
-    # scheduler calling workflow_dispatch every ~10 minutes (see docs/SETUP.pt-BR.md).
+    # scheduler calling workflow_dispatch every few minutes (see docs/SETUP.pt-BR.md).
     - cron: "*/15 * * * *"
   workflow_dispatch:
 

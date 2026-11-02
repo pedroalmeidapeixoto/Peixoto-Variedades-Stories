@@ -60,8 +60,21 @@ def test_nothing_outside_the_window(pace):
 
 def test_respects_the_interval_since_the_last_story(pace):
     last = posted_at(at(10, 0))
-    assert not may_publish(pace, at(10, 19), last)
+    assert not may_publish(pace, at(10, 18), last)
     assert may_publish(pace, at(10, 20), last)
+
+
+def test_a_run_a_few_seconds_early_still_takes_the_slot(pace):
+    last = posted_at(at(10, 0))
+    early = datetime(2026, 10, 9, 10, 18, 40, tzinfo=TZ)  # 18m40s after the last Story
+    assert may_publish(pace, early, last)  # within the 90 s grace of the 20 min interval
+
+
+def test_grace_is_capped_for_short_intervals():
+    pace = parse_pace({"interval_minutes": 2})
+    last = posted_at(at(10, 0))
+    assert not may_publish(pace, at(10, 1), last)  # grace is at most a quarter of the interval
+    assert may_publish(pace, datetime(2026, 10, 9, 10, 1, 31, tzinfo=TZ), last)
 
 
 def test_late_trigger_allows_only_one_story(pace):

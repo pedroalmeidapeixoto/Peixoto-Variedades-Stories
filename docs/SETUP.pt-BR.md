@@ -60,23 +60,23 @@ Você terá: `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BU
    `IG_USER_ID`, `IG_ACCESS_TOKEN`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, `R2_PUBLIC_URL`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
 3. *Settings → Actions → General → Workflow permissions*: **Read and write permissions**.
 
-## 5. Gatilho externo (a cada 10 minutos)
+## 5. Gatilho externo (a cada 3 minutos)
 
-O cron do próprio GitHub atrasa horas. Use o [cron-job.org](https://cron-job.org) (grátis) para disparar o workflow:
+O bot publica **uma arte por execução**, então o gatilho precisa ser mais frequente que o intervalo do `pace.json`. Com `interval_minutes` em 6, use 3 minutos. Com intervalos de 20 minutos ou mais, 5 a 10 minutos bastam. O cron do próprio GitHub atrasa horas. Use o [cron-job.org](https://cron-job.org) (grátis) para disparar o workflow:
 
 1. GitHub → *Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate*:
    - *Repository access*: **Only select repositories** → só `Peixoto-Variedades-Stories`;
    - *Permissions → Repository → Actions*: **Read and write**.
 2. No cron-job.org, **Create cronjob**:
    - URL: `https://api.github.com/repos/<seu-usuario>/Peixoto-Variedades-Stories/actions/workflows/stories.yml/dispatches`
-   - Schedule: a cada 10 minutos
+   - Schedule: a cada 3 minutos (ou o que o parágrafo acima indicar para o seu ritmo)
    - *Advanced*: método **POST**; cabeçalhos `Authorization: Bearer <token fine-grained>`, `Accept: application/vnd.github+json`, `X-GitHub-Api-Version: 2022-11-28`; corpo `{"ref":"main"}`.
 3. Resposta esperada: **204**.
 
 ## 6. Primeiro teste
 
 1. Confira o ritmo em `pace.json` (padrão: 9h às 21h, uma arte a cada 20 min, até 36 por dia).
-2. Mande **uma** arte 1080×1920 ao bot como **arquivo**. Em até ~10 min ele responde "Recebi 1 arte(s)". Se ela for postada ao vivo, ela aparece no Instagram da loja; por isso teste com uma arte que você realmente queira publicar.
+2. Mande **uma** arte 1080×1920 ao bot como **arquivo**. Em poucos minutos ele responde "Recebi 1 arte(s)". Se ela for postada ao vivo, ela aparece no Instagram da loja; por isso teste com uma arte que você realmente queira publicar.
 3. `/fila` mostra o que está na fila; `/remover N` tira um item.
 
 ## Manutenção
