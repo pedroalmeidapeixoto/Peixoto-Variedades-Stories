@@ -169,7 +169,7 @@ def test_expired_token_stops_without_burning_attempts(project, storage, monkeypa
 
     assert run(project) == cli.EXIT_BAD_SETUP
     assert load_queue(project / "state" / "queue.json")[0].attempts == 0
-    assert sent == ["❌ O token do Instagram expirou. Gere um novo (stories-token)."]
+    assert sent == ["❌ O Instagram recusou o token (HTTP 400: expired). Confira ou gere um novo."]
 
 
 def test_item_posted_but_still_queued_is_not_published_twice(project, storage, monkeypatch):

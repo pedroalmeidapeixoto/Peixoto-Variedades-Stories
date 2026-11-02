@@ -100,7 +100,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     except InstagramError as exc:
         log.error("Failed to publish %s: %s", item.name, exc)
         if exc.is_auth_error:  # every Story would fail the same way: do not burn attempts
-            _notify(notifier, "❌ O token do Instagram expirou. Gere um novo (stories-token).")
+            _notify(notifier, f"❌ O Instagram recusou o token ({exc}). Confira ou gere um novo.")
             return EXIT_BAD_SETUP
         gave_up = record_attempt(args.queue, args.failed, item.id, str(exc))
         suffix = " Desisti dele e segui a fila." if gave_up else " Tento de novo na próxima rodada."
