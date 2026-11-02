@@ -1,1 +1,625 @@
-[]
+[
+  {
+    "id": "20261102114416-274925",
+    "key": "stories/20261102114416-274925-01-chivas-regal-12.jpg",
+    "name": "01-chivas-regal-12.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-bb8ccc",
+    "key": "stories/20261102114416-bb8ccc-02-balas-sams.jpg",
+    "name": "02-balas-sams.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-80a92b",
+    "key": "stories/20261102114416-80a92b-03-lokal-bier.jpg",
+    "name": "03-lokal-bier.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-6002b8",
+    "key": "stories/20261102114416-6002b8-04-leite-ninho-forti.jpg",
+    "name": "04-leite-ninho-forti.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-e01733",
+    "key": "stories/20261102114416-e01733-05-absolut-vodka.jpg",
+    "name": "05-absolut-vodka.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-02046d",
+    "key": "stories/20261102114416-02046d-06-wafer-vitamassa-sortidos.jpg",
+    "name": "06-wafer-vitamassa-sortidos.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-811058",
+    "key": "stories/20261102114416-811058-07-antarctica-12-latas.jpg",
+    "name": "07-antarctica-12-latas.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-0ce89a",
+    "key": "stories/20261102114416-0ce89a-08-cachaca-matuta.jpg",
+    "name": "08-cachaca-matuta.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-2c1cfc",
+    "key": "stories/20261102114416-2c1cfc-09-dove-sabonete.jpg",
+    "name": "09-dove-sabonete.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-603df4",
+    "key": "stories/20261102114416-603df4-10-johnnie-walker-red-label.jpg",
+    "name": "10-johnnie-walker-red-label.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-f4bdcf",
+    "key": "stories/20261102114416-f4bdcf-11-skol-12-latas.jpg",
+    "name": "11-skol-12-latas.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-09ca3a",
+    "key": "stories/20261102114416-09ca3a-12-rum-montilla.jpg",
+    "name": "12-rum-montilla.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-038bd9",
+    "key": "stories/20261102114416-038bd9-13-wafer-chokolot-vitamassa.jpg",
+    "name": "13-wafer-chokolot-vitamassa.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-5239ff",
+    "key": "stories/20261102114416-5239ff-14-pacoca-kigarot.jpg",
+    "name": "14-pacoca-kigarot.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-828be7",
+    "key": "stories/20261102114416-828be7-15-colgate-triple-accion.jpg",
+    "name": "15-colgate-triple-accion.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-3af291",
+    "key": "stories/20261102114416-3af291-16-ballena.jpg",
+    "name": "16-ballena.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-8c832a",
+    "key": "stories/20261102114416-8c832a-17-imperio-12-latas.jpg",
+    "name": "17-imperio-12-latas.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-beda18",
+    "key": "stories/20261102114416-beda18-18-prestigio.jpg",
+    "name": "18-prestigio.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-3f3d2f",
+    "key": "stories/20261102114416-3f3d2f-19-mel-borges.jpg",
+    "name": "19-mel-borges.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-20992f",
+    "key": "stories/20261102114416-20992f-20-stella-artois.jpg",
+    "name": "20-stella-artois.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-b4a8d5",
+    "key": "stories/20261102114416-b4a8d5-21-chocolate-baton.jpg",
+    "name": "21-chocolate-baton.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-f1a512",
+    "key": "stories/20261102114416-f1a512-22-bob-pinga.jpg",
+    "name": "22-bob-pinga.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-b3efcf",
+    "key": "stories/20261102114416-b3efcf-23-monster-mango-loco.jpg",
+    "name": "23-monster-mango-loco.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-2c8fe6",
+    "key": "stories/20261102114416-2c8fe6-24-licor-43.jpg",
+    "name": "24-licor-43.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-1900fd",
+    "key": "stories/20261102114416-1900fd-25-kitkat.jpg",
+    "name": "25-kitkat.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-9655ac",
+    "key": "stories/20261102114416-9655ac-26-antarctica-subzero.jpg",
+    "name": "26-antarctica-subzero.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-1a090f",
+    "key": "stories/20261102114416-1a090f-27-jose-cuervo.jpg",
+    "name": "27-jose-cuervo.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-2f3452",
+    "key": "stories/20261102114416-2f3452-28-pipoca-karinto-manteiga.jpg",
+    "name": "28-pipoca-karinto-manteiga.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-dfd92d",
+    "key": "stories/20261102114416-dfd92d-29-corona-long-neck.jpg",
+    "name": "29-corona-long-neck.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-9e9e29",
+    "key": "stories/20261102114416-9e9e29-30-vodka-paloff.jpg",
+    "name": "30-vodka-paloff.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-a01962",
+    "key": "stories/20261102114416-a01962-31-balas-7belo.jpg",
+    "name": "31-balas-7belo.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-7fc690",
+    "key": "stories/20261102114416-7fc690-32-chokito.jpg",
+    "name": "32-chokito.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-0aa4bf",
+    "key": "stories/20261102114416-0aa4bf-33-vinho-quinta-do-morgado.jpg",
+    "name": "33-vinho-quinta-do-morgado.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-b01b23",
+    "key": "stories/20261102114416-b01b23-34-michelob-ultra.jpg",
+    "name": "34-michelob-ultra.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-7dbedc",
+    "key": "stories/20261102114416-7dbedc-35-chiclete-terror-zone.jpg",
+    "name": "35-chiclete-terror-zone.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-d11e1e",
+    "key": "stories/20261102114416-d11e1e-36-batida-mista-maromba.jpg",
+    "name": "36-batida-mista-maromba.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-dccecd",
+    "key": "stories/20261102114416-dccecd-37-itaipava-latao.jpg",
+    "name": "37-itaipava-latao.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-f7f0a6",
+    "key": "stories/20261102114416-f7f0a6-38-vodka-smirnoff.jpg",
+    "name": "38-vodka-smirnoff.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-18316a",
+    "key": "stories/20261102114416-18316a-39-mucilon-arroz-aveia.jpg",
+    "name": "39-mucilon-arroz-aveia.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-ca4ec6",
+    "key": "stories/20261102114416-ca4ec6-40-chiclete-blong.jpg",
+    "name": "40-chiclete-blong.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-1b3ae5",
+    "key": "stories/20261102114416-1b3ae5-41-pippos-vitaminado.jpg",
+    "name": "41-pippos-vitaminado.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-25b1e2",
+    "key": "stories/20261102114416-25b1e2-42-domecq.jpg",
+    "name": "42-domecq.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-4fc2de",
+    "key": "stories/20261102114416-4fc2de-43-brahma-chopp.jpg",
+    "name": "43-brahma-chopp.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-98f027",
+    "key": "stories/20261102114416-98f027-44-fini-tubes.jpg",
+    "name": "44-fini-tubes.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-9ca46e",
+    "key": "stories/20261102114416-9ca46e-45-matuta-coconut-prelancamento.jpg",
+    "name": "45-matuta-coconut-prelancamento.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-cc6203",
+    "key": "stories/20261102114416-cc6203-46-busca-brisa.jpg",
+    "name": "46-busca-brisa.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-f3b8ea",
+    "key": "stories/20261102114416-f3b8ea-47-nescau.jpg",
+    "name": "47-nescau.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-78f7cb",
+    "key": "stories/20261102114416-78f7cb-48-pipoca-karinto-doce.jpg",
+    "name": "48-pipoca-karinto-doce.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-5f6d1c",
+    "key": "stories/20261102114416-5f6d1c-49-kakauzinho.jpg",
+    "name": "49-kakauzinho.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-56a1a6",
+    "key": "stories/20261102114416-56a1a6-50-whisky-combo-maromba.jpg",
+    "name": "50-whisky-combo-maromba.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-534fbd",
+    "key": "stories/20261102114416-534fbd-51-budweiser-long-neck-24.jpg",
+    "name": "51-budweiser-long-neck-24.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-aeec66",
+    "key": "stories/20261102114416-aeec66-52-cachaca-mata-limpa.jpg",
+    "name": "52-cachaca-mata-limpa.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-564cc1",
+    "key": "stories/20261102114416-564cc1-53-cafe-aurora.jpg",
+    "name": "53-cafe-aurora.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-0027be",
+    "key": "stories/20261102114416-0027be-54-lollo.jpg",
+    "name": "54-lollo.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-46a53f",
+    "key": "stories/20261102114416-46a53f-55-passport-scotch.jpg",
+    "name": "55-passport-scotch.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-a43e12",
+    "key": "stories/20261102114416-a43e12-56-pirulito-bigbig.jpg",
+    "name": "56-pirulito-bigbig.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-157c1d",
+    "key": "stories/20261102114416-157c1d-57-cachaca-rainha.jpg",
+    "name": "57-cachaca-rainha.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-2dd22a",
+    "key": "stories/20261102114416-2dd22a-58-budweiser-12-latas.jpg",
+    "name": "58-budweiser-12-latas.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-7436e5",
+    "key": "stories/20261102114416-7436e5-59-stella-pure-gold.jpg",
+    "name": "59-stella-pure-gold.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-b6b669",
+    "key": "stories/20261102114416-b6b669-60-chiclete-festival.jpg",
+    "name": "60-chiclete-festival.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-c3fff9",
+    "key": "stories/20261102114416-c3fff9-61-isqueiro-bic-maxi.jpg",
+    "name": "61-isqueiro-bic-maxi.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-034b61",
+    "key": "stories/20261102114416-034b61-62-rum-capitao-cortez.jpg",
+    "name": "62-rum-capitao-cortez.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-b6ac7b",
+    "key": "stories/20261102114416-b6ac7b-63-heineken-24.jpg",
+    "name": "63-heineken-24.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-7495c3",
+    "key": "stories/20261102114416-7495c3-64-cachaca-pitu.jpg",
+    "name": "64-cachaca-pitu.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-fe6555",
+    "key": "stories/20261102114416-fe6555-65-trident.jpg",
+    "name": "65-trident.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-c6c300",
+    "key": "stories/20261102114416-c6c300-66-batida-mista-rosa.jpg",
+    "name": "66-batida-mista-rosa.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-0c52aa",
+    "key": "stories/20261102114416-0c52aa-67-redbull.jpg",
+    "name": "67-redbull.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-e4a457",
+    "key": "stories/20261102114416-e4a457-68-cafe-sao-braz.jpg",
+    "name": "68-cafe-sao-braz.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-c879b9",
+    "key": "stories/20261102114416-c879b9-69-tortuguita.jpg",
+    "name": "69-tortuguita.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-a72ae8",
+    "key": "stories/20261102114416-a72ae8-70-heineken-12-latas.jpg",
+    "name": "70-heineken-12-latas.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-144829",
+    "key": "stories/20261102114416-144829-71-old-parr-12.jpg",
+    "name": "71-old-parr-12.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-806a7d",
+    "key": "stories/20261102114416-806a7d-72-sonho-de-valsa.jpg",
+    "name": "72-sonho-de-valsa.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-4b51ce",
+    "key": "stories/20261102114416-4b51ce-73-budweiser-473.jpg",
+    "name": "73-budweiser-473.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-4296bd",
+    "key": "stories/20261102114416-4296bd-74-white-horse.jpg",
+    "name": "74-white-horse.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-9aa16c",
+    "key": "stories/20261102114416-9aa16c-75-leite-em-po-itambe.jpg",
+    "name": "75-leite-em-po-itambe.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-ec870c",
+    "key": "stories/20261102114416-ec870c-76-bala-cafe.jpg",
+    "name": "76-bala-cafe.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-de2814",
+    "key": "stories/20261102114416-de2814-77-black-and-white.jpg",
+    "name": "77-black-and-white.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-e1d602",
+    "key": "stories/20261102114416-e1d602-78-smirnoff-ice.jpg",
+    "name": "78-smirnoff-ice.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-901e66",
+    "key": "stories/20261102114416-901e66-79-vodka-orloff.jpg",
+    "name": "79-vodka-orloff.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-954fbb",
+    "key": "stories/20261102114416-954fbb-80-chiclete-plutonita.jpg",
+    "name": "80-chiclete-plutonita.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-729f01",
+    "key": "stories/20261102114416-729f01-81-linguica-perdigao.jpg",
+    "name": "81-linguica-perdigao.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-f23530",
+    "key": "stories/20261102114416-f23530-82-cachaca-serra-preta.jpg",
+    "name": "82-cachaca-serra-preta.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-b79fe4",
+    "key": "stories/20261102114416-b79fe4-83-spaten.jpg",
+    "name": "83-spaten.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-24ffea",
+    "key": "stories/20261102114416-24ffea-84-coloreti-mini.jpg",
+    "name": "84-coloreti-mini.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-9c458d",
+    "key": "stories/20261102114416-9c458d-85-campari.jpg",
+    "name": "85-campari.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-693633",
+    "key": "stories/20261102114416-693633-86-vitarella-cream-cracker.jpg",
+    "name": "86-vitarella-cream-cracker.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-6af013",
+    "key": "stories/20261102114416-6af013-87-antarctica-12-latas-473.jpg",
+    "name": "87-antarctica-12-latas-473.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-8d9423",
+    "key": "stories/20261102114416-8d9423-88-garoto-caixa-sortida.jpg",
+    "name": "88-garoto-caixa-sortida.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-ec2ed8",
+    "key": "stories/20261102114416-ec2ed8-89-tanqueray.jpg",
+    "name": "89-tanqueray.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  }
+]
