@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-0aa4bf",
-    "key": "stories/20261102114416-0aa4bf-33-vinho-quinta-do-morgado.jpg",
-    "name": "33-vinho-quinta-do-morgado.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-b01b23",
     "key": "stories/20261102114416-b01b23-34-michelob-ultra.jpg",
     "name": "34-michelob-ultra.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-7fc690@20261103110821",
     "key": "stories/20261102114416-7fc690-32-chokito.jpg",
     "name": "32-chokito.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-0aa4bf@20261103111420",
+    "key": "stories/20261102114416-0aa4bf-33-vinho-quinta-do-morgado.jpg",
+    "name": "33-vinho-quinta-do-morgado.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
