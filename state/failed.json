@@ -494,5 +494,13 @@
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 3,
     "error": "HTTP 400: User is performing too many actions"
+  },
+  {
+    "id": "20261102114416-2c8fe6@20261103102016",
+    "key": "stories/20261102114416-2c8fe6-24-licor-43.jpg",
+    "name": "24-licor-43.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 3,
+    "error": "HTTP 400: User is performing too many actions"
   }
 ]
