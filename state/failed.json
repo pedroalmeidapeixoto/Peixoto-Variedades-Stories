@@ -62,5 +62,13 @@
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 3,
     "error": "HTTP 400: User is performing too many actions"
+  },
+  {
+    "id": "20261102114416-7436e5",
+    "key": "stories/20261102114416-7436e5-59-stella-pure-gold.jpg",
+    "name": "59-stella-pure-gold.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 3,
+    "error": "HTTP 400: The requested resource does not exist"
   }
 ]
