@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-56a1a6",
-    "key": "stories/20261102114416-56a1a6-50-whisky-combo-maromba.jpg",
-    "name": "50-whisky-combo-maromba.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-534fbd",
     "key": "stories/20261102114416-534fbd-51-budweiser-long-neck-24.jpg",
     "name": "51-budweiser-long-neck-24.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-5f6d1c@20261103125217",
     "key": "stories/20261102114416-5f6d1c-49-kakauzinho.jpg",
     "name": "49-kakauzinho.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-56a1a6@20261103125819",
+    "key": "stories/20261102114416-56a1a6-50-whisky-combo-maromba.jpg",
+    "name": "50-whisky-combo-maromba.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
