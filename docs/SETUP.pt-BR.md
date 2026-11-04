@@ -87,10 +87,12 @@ O `pace.json` está no modo de rodízio (`"recycle": true`): cada arte volta ao 
 2. No Telegram, abra o bot, clique no clipe, escolha **Arquivo** e selecione **todas** as imagens da pasta `arts/pacote` (a numeração `01-…` a `89-…` define a ordem). Confirme o envio **como arquivos**, sem comprimir.
 3. Em alguns minutos o bot responde "Recebi N arte(s)". Mande `/fila` para conferir o total.
 4. Faça isso **fora do horário** (por exemplo, no domingo ou à noite): as artes só entram na fila e a primeira sai na abertura seguinte, às 08:00.
-5. Se o pacote crescer ou diminuir, ajuste `daily_limit` no `pace.json` para o número de artes, para o pacote inteiro sair uma vez por dia.
+5. **Limite da Meta:** o Instagram aceita no máximo **50 Stories publicados pela API a cada 24 horas** (janela móvel). O `pace.json` usa `rolling_limit` e `daily_limit` em 48 para ficar abaixo disso. Um pacote com mais de 48 artes roda em mais de um dia: cada arte volta a cada ~2 dias.
 
 ## Manutenção
 
 - **Token do Instagram:** vence em ~60 dias. Quando vencer, o bot para, avisa no Telegram e preserva a fila. Gere outro (passo 1.4 e 1.5) e atualize o secret `IG_ACCESS_TOKEN`.
 - **Fila acabando:** o bot avisa quando restam `low_queue` Stories e quando acaba.
-- **Falhas:** uma arte que falha 3 vezes vai para `state/failed.json` e a fila segue; você é avisado no Telegram.
+- **Limite de ações da Meta ("too many actions"):** o robô espera sem contar tentativa e sem descartar a arte, e avisa no Telegram uma vez a cada 6 horas.
+- **Falhas:** no modo de rodízio, uma arte que falha vai para o fim da fila e só sai do pacote depois de 6 falhas seguidas; o aviso no Telegram não passa de um a cada 30 minutos.
+- **Restaurar artes descartadas:** se alguma arte for parar em `state/failed.json`, abra *Actions → Restore failed arts → Run workflow*. Ele devolve todas ao pacote, na ordem numérica.

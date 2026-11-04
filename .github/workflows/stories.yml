@@ -65,5 +65,5 @@ jobs:
         run: |
           git config user.name "stories-bot"
           git config user.email "stories-bot@users.noreply.github.com"
-          for f in state/posted.json state/queue.json state/failed.json; do if [ -e "$f" ]; then git add "$f"; fi; done
+          for f in state/posted.json state/queue.json state/failed.json state/alerts.json; do if [ -e "$f" ]; then git add "$f"; fi; done
           git diff --cached --quiet || (git commit -m "chore: record published stories" && (git push || (git pull --rebase && git push)))

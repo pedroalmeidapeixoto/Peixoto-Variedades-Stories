@@ -61,7 +61,8 @@ flowchart LR
 | `skip_dates` | Dates (`YYYY-MM-DD`) with no Stories at all, such as holidays. The queue just waits. |
 | `start` / `end` | Stories only go out inside this local window. |
 | `interval_minutes` | Minimum gap since the last Story. One Story goes out per run, so the trigger must be more frequent than this (e.g. every 3 min for a 6 min interval); a 90 s slack absorbs early runs. |
-| `daily_limit` | Max Stories per local day (Instagram allows 100 API posts per 24 h; the cap here is 90). |
+| `daily_limit` | Max Stories per local calendar day (at most 50). |
+| `rolling_limit` | Max Stories in any 24-hour stretch (default and maximum 50, 48 recommended). **Meta refuses every API post after 50 in a rolling 24 h** with "User is performing too many actions"; this cap keeps the bot under it. |
 | `recycle` | `true` turns the queue into a **daily pack**: a published art goes back to the end of the queue (and stays in the bucket) instead of leaving it, so the same products run again every day. Off by default. `low_queue` alerts are skipped in this mode. |
 | `low_queue` | Telegram alert when this many Stories are left (and another when the queue runs out). |
 | `notify_each` | Also message on every published Story (off by default: dozens a day is noisy). Failures always notify. |
@@ -133,6 +134,7 @@ See [`docs/SETUP.pt-BR.md`](docs/SETUP.pt-BR.md). In short:
 
 ## Limitations
 
+- Instagram accepts at most **50 API-published posts per rolling 24 hours**. A pack bigger than that rotates over more than one day (each art comes up about every other day).
 - The API cannot add interactive stickers (link, poll, mention): put any text inside the art.
 - Keep the repository **public**: it only holds the queue (file names), and public repositories get unlimited Actions minutes, which a trigger every few minutes needs.
 - GitHub pauses scheduled workflows after 60 days without repository activity; here every post commits, so that does not happen while the queue is in use.

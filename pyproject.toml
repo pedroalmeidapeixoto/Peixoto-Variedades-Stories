@@ -30,6 +30,7 @@ stories-token = "stories_bot.token_setup:main"
 stories-token-ig = "stories_bot.ig_token:main"
 stories-inbox = "stories_bot.inbox_cli:main"
 stories-enqueue = "stories_bot.enqueue_cli:main"
+stories-requeue = "stories_bot.requeue_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

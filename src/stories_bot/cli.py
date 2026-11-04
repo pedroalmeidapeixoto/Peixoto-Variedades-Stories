@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 import logging
 from collections.abc import Sequence
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -13,14 +13,23 @@ from .config import ConfigError, InstagramSettings, R2Settings
 from .instagram import API_URLS, InstagramClient, InstagramError
 from .notify import TelegramNotifier
 from .pace import PaceError, load_pace, may_publish
-from .state import load_posted, record_post
+from .state import load_posted, record_post, should_alert
 from .storage import R2Storage, Storage, StorageError
-from .story_queue import load_queue, record_attempt, recycle_item, remove_item
+from .story_queue import (
+    MAX_ATTEMPTS,
+    ROTATING_MAX_ATTEMPTS,
+    load_queue,
+    record_attempt,
+    recycle_item,
+    remove_item,
+)
 
 log = logging.getLogger("stories_bot")
 
 EXIT_OK, EXIT_FAILED, EXIT_BAD_SETUP = 0, 1, 2
 RECYCLE_HISTORY_DAYS = 7  # how long posted Stories are remembered when the queue is recycled
+RATE_LIMIT_ALERT_EVERY = timedelta(hours=6)  # one Telegram message per throttling episode
+FAILURE_ALERT_EVERY = timedelta(minutes=30)  # and no storm of messages when many arts fail
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -31,6 +40,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--queue", type=Path, default=Path("state/queue.json"))
     parser.add_argument("--failed", type=Path, default=Path("state/failed.json"))
     parser.add_argument("--state", type=Path, default=Path("state/posted.json"))
+    parser.add_argument("--alerts", type=Path, default=Path("state/alerts.json"))
     parser.add_argument("--dry-run", action="store_true", help="show what would be published")
     parser.add_argument("--now", help="pretend it is this local time, e.g. 2026-10-09T18:05")
     return parser
@@ -104,6 +114,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     client = InstagramClient(
         instagram.user_id, instagram.access_token, base_url=API_URLS[instagram.api]
     )
+    quota = client.publishing_quota()
+    if quota is not None and quota[0] >= quota[1]:
+        log.info("Meta's publishing quota is used up (%d of %d); waiting", *quota)
+        return EXIT_OK
     try:
         media_id = client.publish_story(storage.public_url(item.key), is_video=item.is_video)
     except InstagramError as exc:
@@ -111,9 +125,21 @@ def main(argv: Sequence[str] | None = None) -> int:
         if exc.is_auth_error:  # every Story would fail the same way: do not burn attempts
             _notify(notifier, f"❌ O Instagram recusou o token ({exc}). Confira ou gere um novo.")
             return EXIT_BAD_SETUP
-        gave_up = record_attempt(args.queue, args.failed, item.id, str(exc))
-        suffix = " Desisti dele e segui a fila." if gave_up else " Tento de novo na próxima rodada."
-        _notify(notifier, f"❌ Falha ao publicar {item.name}: {exc}.{suffix}")
+        if exc.is_rate_limit:  # the account is throttled, not the art: wait, never count it
+            if should_alert(args.alerts, "rate_limit", now, RATE_LIMIT_ALERT_EVERY):
+                _notify(notifier, f"⏸️ O Instagram limitou as postagens ({exc}). Vou esperar.")
+            return EXIT_OK
+        gave_up = record_attempt(
+            args.queue,
+            args.failed,
+            item.id,
+            str(exc),
+            rotate=pace.recycle,
+            max_attempts=ROTATING_MAX_ATTEMPTS if pace.recycle else MAX_ATTEMPTS,
+        )
+        suffix = " Desisti dele e segui a fila." if gave_up else " Tento de novo mais tarde."
+        if should_alert(args.alerts, "failure", now, FAILURE_ALERT_EVERY):
+            _notify(notifier, f"❌ Falha ao publicar {item.name}: {exc}.{suffix}")
         return EXIT_FAILED
 
     record_post(

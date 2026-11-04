@@ -88,3 +88,37 @@ def test_container_that_never_finishes_times_out():
 
     with pytest.raises(InstagramError, match="not ready"):
         make_client(max_polls=3).publish_story("https://x/a.jpg", is_video=False)
+
+
+@pytest.mark.parametrize(
+    ("message", "code", "expected"),
+    [
+        ("HTTP 400: User is performing too many actions", None, True),
+        ("HTTP 400: Application request limit reached", 4, True),
+        ("HTTP 400: x", 613, True),
+        ("HTTP 400: The requested resource does not exist", 100, False),
+        ("HTTP 400: Invalid OAuth access token", 190, False),
+    ],
+)
+def test_rate_limit_is_told_apart_from_other_errors(message, code, expected):
+    assert InstagramError(message, code).is_rate_limit is expected
+
+
+@responses.activate
+def test_publishing_quota_is_read_from_the_api():
+    responses.get(
+        f"{GRAPH_URL}/17841/content_publishing_limit",
+        json={
+            "data": [{"quota_usage": 12, "config": {"quota_total": 50, "quota_duration": 86400}}]
+        },
+    )
+    assert make_client().publishing_quota() == (12, 50)
+
+
+@responses.activate
+def test_publishing_quota_is_none_when_unavailable_or_oddly_shaped():
+    url = f"{GRAPH_URL}/17841/content_publishing_limit"
+    responses.get(url, status=400, json={"error": {}})
+    assert make_client().publishing_quota() is None
+    responses.replace(responses.GET, url, json={"data": []})
+    assert make_client().publishing_quota() is None

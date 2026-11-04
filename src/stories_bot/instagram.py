@@ -19,6 +19,8 @@ INSTAGRAM_LOGIN_URL = "https://graph.instagram.com/v21.0"
 API_URLS = {"facebook": GRAPH_URL, "instagram": INSTAGRAM_LOGIN_URL}
 REQUEST_TIMEOUT = 60
 AUTH_ERROR_CODES = frozenset({102, 190})  # invalid session / expired or revoked access token
+RATE_LIMIT_CODES = frozenset({4, 17, 32, 613})  # Graph API throttling
+RATE_LIMIT_HINTS = ("too many actions", "request limit", "rate limit", "too many calls")
 
 
 class InstagramError(RuntimeError):
@@ -36,6 +38,12 @@ class InstagramError(RuntimeError):
     def is_auth_error(self) -> bool:
         """The token is expired or revoked: retrying other items will not help."""
         return self.code in AUTH_ERROR_CODES
+
+    @property
+    def is_rate_limit(self) -> bool:
+        """Meta is throttling the account ("too many actions"): the art itself is fine."""
+        text = str(self).lower()
+        return self.code in RATE_LIMIT_CODES or any(hint in text for hint in RATE_LIMIT_HINTS)
 
 
 class InstagramClient:
@@ -57,6 +65,20 @@ class InstagramClient:
         self._poll_interval = poll_interval
         self._max_polls = max_polls
         self._sleep = sleep
+
+    def publishing_quota(self) -> tuple[int, int] | None:
+        """(posts used, posts allowed) in Meta's rolling 24 h window, or None when unknown.
+
+        Asking is optional: any problem simply means "no information" and the local cap applies.
+        """
+        try:
+            body = self._call(
+                "GET", f"{self._user_id}/content_publishing_limit", {"fields": "quota_usage,config"}
+            )
+            entry = body["data"][0]
+            return int(entry["quota_usage"]), int(entry["config"]["quota_total"])
+        except (InstagramError, KeyError, IndexError, TypeError, ValueError):
+            return None
 
     def publish_story(self, media_url: str, *, is_video: bool) -> str:
         """Publish a Story from a public URL and return the resulting media id."""

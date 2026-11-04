@@ -44,6 +44,22 @@ def record_post(
     write_json(path, posted)
 
 
+def should_alert(path: Path, key: str, now: datetime, every: timedelta) -> bool:
+    """True at most once per `every` for each alert `key` (and remembers that it said so).
+
+    Keeps a stuck situation from sending a Telegram message on every single run.
+    """
+    sent: dict[str, str] = {}
+    if path.exists():
+        sent = json.loads(path.read_text(encoding="utf-8"))
+    last = sent.get(key)
+    if last is not None and now - datetime.fromisoformat(last) < every:
+        return False
+    sent[key] = now.isoformat()
+    write_json(path, sent)
+    return True
+
+
 def load_offset(path: Path) -> int | None:
     """Next Telegram update id to ask for, or None before the first run."""
     if not path.exists():

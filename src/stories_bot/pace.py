@@ -12,8 +12,9 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 WEEKDAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")  # index == date.weekday()
 DEFAULT_TIMEZONE = "America/Sao_Paulo"
-# Instagram allows 100 API-published posts per rolling 24 hours; stay well under it.
-MAX_DAILY_LIMIT = 90
+# Instagram allows 50 API-published posts per rolling 24 hours; beyond that every request is
+# refused with "too many actions".
+MAX_DAILY_LIMIT = 50
 GRACE = timedelta(seconds=90)
 
 
@@ -30,6 +31,7 @@ class Pace:
     skip_dates: frozenset[date]  # holidays and other days with no Stories at all
     interval: timedelta
     daily_limit: int
+    rolling_limit: int  # max posts in any 24 h stretch (Meta counts a rolling window)
     low_queue: int  # warn when this many Stories are left
     notify_each: bool  # message on every published Story, not only on problems
     recycle: bool  # a published art goes back to the end of the queue instead of leaving it
@@ -81,7 +83,8 @@ def parse_pace(data: Any) -> Pace:
         days=frozenset(days),
         skip_dates=skip_dates,
         interval=timedelta(minutes=_parse_int(data, "interval_minutes", 20, 1, 24 * 60)),
-        daily_limit=_parse_int(data, "daily_limit", 60, 1, MAX_DAILY_LIMIT),
+        daily_limit=_parse_int(data, "daily_limit", 48, 1, MAX_DAILY_LIMIT),
+        rolling_limit=_parse_int(data, "rolling_limit", 48, 1, MAX_DAILY_LIMIT),
         low_queue=_parse_int(data, "low_queue", 10, 0, 1000),
         notify_each=bool(data.get("notify_each", False)),
         recycle=bool(data.get("recycle", False)),
@@ -115,6 +118,9 @@ def may_publish(pace: Pace, now: datetime, posted: Mapping[str, Mapping[str, Any
     times = [datetime.fromisoformat(entry["posted_at"]) for entry in posted.values()]
     today = sum(1 for t in times if t.astimezone(pace.timezone).date() == now.date())
     if today >= pace.daily_limit:
+        return False
+    day_ago = now - timedelta(hours=24)
+    if sum(1 for t in times if t > day_ago) >= pace.rolling_limit:
         return False
     wait = pace.interval - min(GRACE, pace.interval / 4)
     return not times or now - max(times) >= wait

@@ -65,3 +65,17 @@ def test_state_roundtrip(tmp_path):
     assert load_offset(offset) is None
     save_offset(offset, 7)
     assert load_offset(offset) == 7
+
+
+def test_should_alert_speaks_once_per_period(tmp_path):
+    from datetime import datetime, timedelta
+
+    from stories_bot.state import should_alert
+
+    path = tmp_path / "alerts.json"
+    t0 = datetime(2026, 10, 9, 10, 0)
+    every = timedelta(hours=6)
+    assert should_alert(path, "rate_limit", t0, every) is True
+    assert should_alert(path, "rate_limit", t0 + timedelta(hours=5), every) is False
+    assert should_alert(path, "failure", t0 + timedelta(hours=5), every) is True  # separate key
+    assert should_alert(path, "rate_limit", t0 + timedelta(hours=6), every) is True

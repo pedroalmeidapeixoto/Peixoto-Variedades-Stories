@@ -6,7 +6,7 @@ import pytest
 from stories_bot import cli
 from stories_bot.instagram import InstagramClient, InstagramError
 from stories_bot.notify import TelegramNotifier
-from stories_bot.story_queue import MAX_ATTEMPTS, add_art, load_queue
+from stories_bot.story_queue import MAX_ATTEMPTS, ROTATING_MAX_ATTEMPTS, add_art, load_queue
 
 MORNING = "2026-10-09T10:00"
 ENV = {
@@ -25,6 +25,7 @@ def project(tmp_path, monkeypatch, storage):
     for name in [*ENV, "TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID"]:
         monkeypatch.delenv(name, raising=False)
     monkeypatch.setattr(cli, "build_storage", lambda settings: storage)
+    monkeypatch.setattr(InstagramClient, "publishing_quota", lambda self: None)  # no network
     (tmp_path / "pace.json").write_text(json.dumps({"low_queue": 1}))
     return tmp_path
 
@@ -55,6 +56,7 @@ def run(project, now=MORNING, *extra):
             "--queue", str(project / "state" / "queue.json"),
             "--failed", str(project / "state" / "failed.json"),
             "--state", str(project / "state" / "posted.json"),
+            "--alerts", str(project / "state" / "alerts.json"),
             "--now", now,
             *extra,
         ]
@@ -147,7 +149,7 @@ def test_failure_counts_an_attempt_and_keeps_the_item(project, storage, monkeypa
     (queued,) = load_queue(project / "state" / "queue.json")
     assert queued.id == item.id and queued.attempts == 1
     assert not (project / "state" / "posted.json").exists()
-    assert sent == ["❌ Falha ao publicar a.jpg: HTTP 400: nope. Tento de novo na próxima rodada."]
+    assert sent == ["❌ Falha ao publicar a.jpg: HTTP 400: nope. Tento de novo mais tarde."]
 
 
 def test_item_that_keeps_failing_is_set_aside_so_the_queue_moves_on(project, storage, monkeypatch):
@@ -284,3 +286,90 @@ def test_notify_each_publish_when_enabled(project, storage, monkeypatch, sent):
 
     assert run(project) == cli.EXIT_OK
     assert sent == ["✅ Story publicado: a.jpg (09/10 10:00). Fila: 1"]
+
+
+RATE_LIMIT = InstagramError("HTTP 400: User is performing too many actions", 4)
+
+
+def test_rate_limit_waits_without_burning_attempts_or_dropping_the_art(
+    project, storage, monkeypatch, sent
+):
+    configure(monkeypatch)
+    (item,) = enqueue(project, storage, "a")
+    fake_publish(monkeypatch, RATE_LIMIT)
+
+    for minute in ("10:00", "10:06", "10:12"):  # a stretch of throttled runs
+        assert run(project, f"2026-10-09T{minute}") == cli.EXIT_OK
+    (queued,) = load_queue(project / "state" / "queue.json")
+    assert queued.id == item.id and queued.attempts == 0
+    assert not (project / "state" / "failed.json").exists()
+    assert len(sent) == 1 and sent[0].startswith("⏸️ O Instagram limitou")  # told once, not 3x
+
+
+def test_a_recycled_queue_rotates_a_failing_art_instead_of_dropping_it(
+    project, storage, monkeypatch
+):
+    configure(monkeypatch)
+    recycle_pace(project)
+    enqueue(project, storage, "bad", "good")
+    calls = []
+
+    def publish(self, url, *, is_video):
+        calls.append(url)
+        if "bad" in url:
+            raise InstagramError("HTTP 400: The requested resource does not exist", 100)
+        return "m1"
+
+    monkeypatch.setattr(InstagramClient, "publish_story", publish)
+
+    assert run(project, "2026-10-09T10:00") == cli.EXIT_FAILED
+    queue = load_queue(project / "state" / "queue.json")
+    assert [i.name for i in queue] == ["good.jpg", "bad.jpg"]  # the bad one went to the back
+    assert queue[1].attempts == 1
+    assert run(project, "2026-10-09T10:06") == cli.EXIT_OK  # and the good one is not held up
+    assert any("good" in c for c in calls)
+
+
+def test_a_recycled_art_is_only_set_aside_after_many_laps(project, storage, monkeypatch):
+    configure(monkeypatch)
+    recycle_pace(project)
+    enqueue(project, storage, "bad")
+    fake_publish(monkeypatch, InstagramError("HTTP 400: nope", 100))
+
+    for n in range(ROTATING_MAX_ATTEMPTS - 1):
+        run(project, f"2026-10-09T10:{n * 6:02d}")
+    assert len(load_queue(project / "state" / "queue.json")) == 1  # still in the pack
+    run(project, "2026-10-09T11:00")
+    assert load_queue(project / "state" / "queue.json") == []
+    assert json.loads((project / "state" / "failed.json").read_text())[0]["name"] == "bad.jpg"
+
+
+def test_failure_messages_are_not_repeated_every_run(project, storage, monkeypatch, sent):
+    configure(monkeypatch)
+    enqueue(project, storage, "a", "b", "c")
+    fake_publish(monkeypatch, InstagramError("HTTP 400: nope", 100))
+
+    run(project, "2026-10-09T10:00")
+    run(project, "2026-10-09T10:06")
+    assert len(sent) == 1
+
+
+def test_a_full_meta_quota_waits_without_trying(project, storage, monkeypatch):
+    configure(monkeypatch)
+    enqueue(project, storage, "a")
+    monkeypatch.setattr(InstagramClient, "publishing_quota", lambda self: (50, 50))
+    calls = []
+    fake_publish(monkeypatch, calls=calls)
+
+    assert run(project) == cli.EXIT_OK
+    assert calls == [] and not (project / "state" / "posted.json").exists()
+
+
+def test_a_quota_with_room_publishes_normally(project, storage, monkeypatch):
+    configure(monkeypatch)
+    enqueue(project, storage, "a")
+    monkeypatch.setattr(InstagramClient, "publishing_quota", lambda self: (10, 50))
+    calls = []
+    fake_publish(monkeypatch, calls=calls)
+
+    assert run(project) == cli.EXIT_OK and len(calls) == 1

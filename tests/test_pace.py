@@ -48,6 +48,31 @@ def test_skip_date_is_judged_in_local_time():
     assert not may_publish(pace, friday_night, {})
 
 
+def test_rolling_limit_counts_the_last_24_hours_not_the_calendar_day():
+    pace = parse_pace(
+        {
+            "rolling_limit": 3,
+            "interval_minutes": 1,
+            "start": "00:00",
+            "end": "23:59",
+            "daily_limit": 50,
+        }
+    )
+    recent = posted_at(at(22, 0, day=8), at(23, 0, day=8), at(0, 30, day=9))
+    # Friday 08:00 is a new calendar day (only one post today), but all three are within 24 h
+    assert not may_publish(pace, at(8, 0, day=9), recent)
+    # Friday 22:30: the 22:00 post of Thursday has aged out of the window, a slot is free
+    assert may_publish(pace, at(22, 30, day=9), recent)
+
+
+def test_rolling_limit_defaults_to_the_safe_value_and_is_capped():
+    assert parse_pace({}).rolling_limit == 48
+    with pytest.raises(PaceError):
+        parse_pace({"rolling_limit": 51})
+    with pytest.raises(PaceError):
+        parse_pace({"daily_limit": 89})
+
+
 def test_recycle_is_off_by_default():
     assert parse_pace({}).recycle is False
     assert parse_pace({"recycle": True}).recycle is True
