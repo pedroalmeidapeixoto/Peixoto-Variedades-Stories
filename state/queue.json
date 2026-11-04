@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-4fc2de@20261103121417",
-    "key": "stories/20261102114416-4fc2de-43-brahma-chopp.jpg",
-    "name": "43-brahma-chopp.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-98f027@20261103122215",
     "key": "stories/20261102114416-98f027-44-fini-tubes.jpg",
     "name": "44-fini-tubes.jpg",
@@ -136,6 +129,13 @@
     "id": "20261102114416-25b1e2@20261104091618",
     "key": "stories/20261102114416-25b1e2-42-domecq.jpg",
     "name": "42-domecq.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-4fc2de@20261104092215",
+    "key": "stories/20261102114416-4fc2de-43-brahma-chopp.jpg",
+    "name": "43-brahma-chopp.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
