@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-9aa16c@20261104095242",
-    "key": "stories/20261102114416-9aa16c-75-leite-em-po-itambe.jpg",
-    "name": "75-leite-em-po-itambe.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-ec870c@20261104095242",
     "key": "stories/20261102114416-ec870c-76-bala-cafe.jpg",
     "name": "76-bala-cafe.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-4296bd@20261104163035",
     "key": "stories/20261102114416-4296bd-74-white-horse.jpg",
     "name": "74-white-horse.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-9aa16c@20261104164518",
+    "key": "stories/20261102114416-9aa16c-75-leite-em-po-itambe.jpg",
+    "name": "75-leite-em-po-itambe.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
