@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-901e66@20261104095242",
-    "key": "stories/20261102114416-901e66-79-vodka-orloff.jpg",
-    "name": "79-vodka-orloff.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-954fbb@20261104095242",
     "key": "stories/20261102114416-954fbb-80-chiclete-plutonita.jpg",
     "name": "80-chiclete-plutonita.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-e1d602@20261104173019",
     "key": "stories/20261102114416-e1d602-78-smirnoff-ice.jpg",
     "name": "78-smirnoff-ice.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-901e66@20261104174518",
+    "key": "stories/20261102114416-901e66-79-vodka-orloff.jpg",
+    "name": "79-vodka-orloff.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
