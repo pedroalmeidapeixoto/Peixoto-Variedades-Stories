@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-b79fe4@20261104095242",
-    "key": "stories/20261102114416-b79fe4-83-spaten.jpg",
-    "name": "83-spaten.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-24ffea@20261104095242",
     "key": "stories/20261102114416-24ffea-84-coloreti-mini.jpg",
     "name": "84-coloreti-mini.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-f23530@20261105082019",
     "key": "stories/20261102114416-f23530-82-cachaca-serra-preta.jpg",
     "name": "82-cachaca-serra-preta.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-b79fe4@20261105083513",
+    "key": "stories/20261102114416-b79fe4-83-spaten.jpg",
+    "name": "83-spaten.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
