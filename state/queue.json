@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-dccecd@20261104084616",
-    "key": "stories/20261102114416-dccecd-37-itaipava-latao.jpg",
-    "name": "37-itaipava-latao.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-f7f0a6@20261104085218",
     "key": "stories/20261102114416-f7f0a6-38-vodka-smirnoff.jpg",
     "name": "38-vodka-smirnoff.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-d11e1e@20261105190020",
     "key": "stories/20261102114416-d11e1e-36-batida-mista-maromba.jpg",
     "name": "36-batida-mista-maromba.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-dccecd@20261105191518",
+    "key": "stories/20261102114416-dccecd-37-itaipava-latao.jpg",
+    "name": "37-itaipava-latao.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
