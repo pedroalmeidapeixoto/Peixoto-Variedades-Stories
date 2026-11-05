@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-9655ac@20261104095242",
-    "key": "stories/20261102114416-9655ac-26-antarctica-subzero.jpg",
-    "name": "26-antarctica-subzero.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-1a090f@20261104095242",
     "key": "stories/20261102114416-1a090f-27-jose-cuervo.jpg",
     "name": "27-jose-cuervo.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-1900fd@20261105161520",
     "key": "stories/20261102114416-1900fd-25-kitkat.jpg",
     "name": "25-kitkat.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-9655ac@20261105163017",
+    "key": "stories/20261102114416-9655ac-26-antarctica-subzero.jpg",
+    "name": "26-antarctica-subzero.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
