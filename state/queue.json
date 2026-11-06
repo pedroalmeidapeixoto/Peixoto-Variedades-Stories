@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-c6c300@20261104144018",
-    "key": "stories/20261102114416-c6c300-66-batida-mista-rosa.jpg",
-    "name": "66-batida-mista-rosa.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-0c52aa@20261104145514",
     "key": "stories/20261102114416-0c52aa-67-redbull.jpg",
     "name": "67-redbull.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-fe6555@20261106142019",
     "key": "stories/20261102114416-fe6555-65-trident.jpg",
     "name": "65-trident.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-c6c300@20261106143517",
+    "key": "stories/20261102114416-c6c300-66-batida-mista-rosa.jpg",
+    "name": "66-batida-mista-rosa.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
