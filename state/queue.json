@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-de2814@20261104171519",
-    "key": "stories/20261102114416-de2814-77-black-and-white.jpg",
-    "name": "77-black-and-white.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-e1d602@20261104173019",
     "key": "stories/20261102114416-e1d602-78-smirnoff-ice.jpg",
     "name": "78-smirnoff-ice.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-ec870c@20261106170521",
     "key": "stories/20261102114416-ec870c-76-bala-cafe.jpg",
     "name": "76-bala-cafe.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-de2814@20261106172018",
+    "key": "stories/20261102114416-de2814-77-black-and-white.jpg",
+    "name": "77-black-and-white.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
