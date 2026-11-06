@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-b6ac7b@20261104135514",
-    "key": "stories/20261102114416-b6ac7b-63-heineken-24.jpg",
-    "name": "63-heineken-24.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-7495c3@20261104141019",
     "key": "stories/20261102114416-7495c3-64-cachaca-pitu.jpg",
     "name": "64-cachaca-pitu.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-034b61@20261106133519",
     "key": "stories/20261102114416-034b61-62-rum-capitao-cortez.jpg",
     "name": "62-rum-capitao-cortez.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-b6ac7b@20261106135017",
+    "key": "stories/20261102114416-b6ac7b-63-heineken-24.jpg",
+    "name": "63-heineken-24.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
