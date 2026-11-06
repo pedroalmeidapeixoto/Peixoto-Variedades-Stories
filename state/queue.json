@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-9c458d@20261105090516",
-    "key": "stories/20261102114416-9c458d-85-campari.jpg",
-    "name": "85-campari.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-693633@20261105092018",
     "key": "stories/20261102114416-693633-86-vitarella-cream-cracker.jpg",
     "name": "86-vitarella-cream-cracker.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-24ffea@20261106190515",
     "key": "stories/20261102114416-24ffea-84-coloreti-mini.jpg",
     "name": "84-coloreti-mini.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-9c458d@20261106192017",
+    "key": "stories/20261102114416-9c458d-85-campari.jpg",
+    "name": "85-campari.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
