@@ -30,6 +30,7 @@ class QueueItem:
     name: str  # original file name, shown in messages
     added_at: str
     attempts: int = 0
+    last_error: str = ""  # why the latest attempt failed, so it can be read without the logs
 
     @property
     def is_video(self) -> bool:
@@ -98,7 +99,7 @@ def recycle_item(path: Path, item_id: str, new_id: str) -> bool:
     item = next((i for i in items if i.id == item_id), None)
     if item is None:
         return False
-    again = QueueItem(**{**asdict(item), "id": new_id, "attempts": 0})
+    again = QueueItem(**{**asdict(item), "id": new_id, "attempts": 0, "last_error": ""})
     save_queue(path, [*(i for i in items if i.id != item_id), again])
     return True
 
@@ -123,7 +124,7 @@ def record_attempt(
             continue
         attempts = item.attempts + 1
         if attempts < max_attempts:
-            tried = QueueItem(**{**asdict(item), "attempts": attempts})
+            tried = QueueItem(**{**asdict(item), "attempts": attempts, "last_error": error[:300]})
             if rotate:
                 items = [*(i for i in items if i.id != item_id), tried]
             else:

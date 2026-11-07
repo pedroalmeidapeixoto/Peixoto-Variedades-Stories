@@ -326,6 +326,7 @@ def test_a_recycled_queue_rotates_a_failing_art_instead_of_dropping_it(
     queue = load_queue(project / "state" / "queue.json")
     assert [i.name for i in queue] == ["good.jpg", "bad.jpg"]  # the bad one went to the back
     assert queue[1].attempts == 1
+    assert queue[1].last_error == "HTTP 400: The requested resource does not exist"
     assert run(project, "2026-10-09T10:06") == cli.EXIT_OK  # and the good one is not held up
     assert any("good" in c for c in calls)
 

@@ -101,6 +101,9 @@ def test_rotating_a_failure_sends_it_to_the_back_and_keeps_counting(tmp_path, st
     assert record_attempt(queue, failed, a.id, "x", rotate=True, max_attempts=3) is False
     assert [i.id for i in load_queue(queue)] == [b.id, c.id, a.id]
     assert load_queue(queue)[-1].attempts == 1
+    assert load_queue(queue)[-1].last_error == "x"
+    # a successful lap clears the note
+    assert recycle_item(queue, a.id, "lap2") and load_queue(queue)[-1].last_error == ""
 
 
 def test_requeue_failed_restores_everything_in_posting_order(tmp_path, storage):
