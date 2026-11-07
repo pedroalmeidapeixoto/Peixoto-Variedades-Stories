@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-80a92b@20261105105023",
-    "key": "stories/20261102114416-80a92b-03-lokal-bier.jpg",
-    "name": "03-lokal-bier.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-6002b8@20261105110523",
     "key": "stories/20261102114416-6002b8-04-leite-ninho-forti.jpg",
     "name": "04-leite-ninho-forti.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-bb8ccc@20261107085017",
     "key": "stories/20261102114416-bb8ccc-02-balas-sams.jpg",
     "name": "02-balas-sams.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-80a92b@20261107090515",
+    "key": "stories/20261102114416-80a92b-03-lokal-bier.jpg",
+    "name": "03-lokal-bier.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
