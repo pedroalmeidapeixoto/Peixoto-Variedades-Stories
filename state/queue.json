@@ -1,12 +1,5 @@
 [
   {
-    "id": "20261102114416-603df4@20261105123515",
-    "key": "stories/20261102114416-603df4-10-johnnie-walker-red-label.jpg",
-    "name": "10-johnnie-walker-red-label.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0
-  },
-  {
     "id": "20261102114416-f4bdcf@20261104095242",
     "key": "stories/20261102114416-f4bdcf-11-skol-12-latas.jpg",
     "name": "11-skol-12-latas.jpg",
@@ -619,6 +612,13 @@
     "id": "20261102114416-2c1cfc@20261107102514",
     "key": "stories/20261102114416-2c1cfc-09-dove-sabonete.jpg",
     "name": "09-dove-sabonete.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0
+  },
+  {
+    "id": "20261102114416-603df4@20261107104017",
+    "key": "stories/20261102114416-603df4-10-johnnie-walker-red-label.jpg",
+    "name": "10-johnnie-walker-red-label.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0
   }
