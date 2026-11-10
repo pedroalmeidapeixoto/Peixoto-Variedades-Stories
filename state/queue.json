@@ -1,13 +1,5 @@
 [
   {
-    "id": "20261102114416-46a53f@20261109093019",
-    "key": "stories/20261102114416-46a53f-55-passport-scotch.jpg",
-    "name": "55-passport-scotch.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0,
-    "last_error": ""
-  },
-  {
     "id": "20261102114416-a43e12@20261109094515",
     "key": "stories/20261102114416-a43e12-56-pirulito-bigbig.jpg",
     "name": "56-pirulito-bigbig.jpg",
@@ -710,5 +702,13 @@
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0,
     "last_error": ""
+  },
+  {
+    "id": "20261102114416-46a53f@20261109093019",
+    "key": "stories/20261102114416-46a53f-55-passport-scotch.jpg",
+    "name": "55-passport-scotch.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 1,
+    "last_error": "HTTP 400: Media ID is not available"
   }
 ]
