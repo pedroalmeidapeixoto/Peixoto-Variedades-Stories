@@ -1,13 +1,5 @@
 [
   {
-    "id": "20261102114416-2c1cfc@20261107102514",
-    "key": "stories/20261102114416-2c1cfc-09-dove-sabonete.jpg",
-    "name": "09-dove-sabonete.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0,
-    "last_error": ""
-  },
-  {
     "id": "20261102114416-603df4@20261107104017",
     "key": "stories/20261102114416-603df4-10-johnnie-walker-red-label.jpg",
     "name": "10-johnnie-walker-red-label.jpg",
@@ -707,6 +699,14 @@
     "id": "20261102114416-0ce89a@20261110080025",
     "key": "stories/20261102114416-0ce89a-08-cachaca-matuta.jpg",
     "name": "08-cachaca-matuta.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": "20261102114416-2c1cfc@20261110082018",
+    "key": "stories/20261102114416-2c1cfc-09-dove-sabonete.jpg",
+    "name": "09-dove-sabonete.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0,
     "last_error": ""
