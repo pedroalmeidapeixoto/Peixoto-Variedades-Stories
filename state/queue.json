@@ -1,13 +1,5 @@
 [
   {
-    "id": "20261102114416-78f7cb@20261107195021",
-    "key": "stories/20261102114416-78f7cb-48-pipoca-karinto-doce.jpg",
-    "name": "48-pipoca-karinto-doce.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0,
-    "last_error": ""
-  },
-  {
     "id": "20261102114416-5f6d1c@20261109080021",
     "key": "stories/20261102114416-5f6d1c-49-kakauzinho.jpg",
     "name": "49-kakauzinho.jpg",
@@ -710,5 +702,13 @@
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0,
     "last_error": ""
+  },
+  {
+    "id": "20261102114416-78f7cb@20261107195021",
+    "key": "stories/20261102114416-78f7cb-48-pipoca-karinto-doce.jpg",
+    "name": "48-pipoca-karinto-doce.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 1,
+    "last_error": "HTTP 400: The requested resource does not exist"
   }
 ]
