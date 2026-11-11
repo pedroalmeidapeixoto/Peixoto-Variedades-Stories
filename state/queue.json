@@ -1,13 +1,5 @@
 [
   {
-    "id": "20261102114416-954fbb@20261109155016",
-    "key": "stories/20261102114416-954fbb-80-chiclete-plutonita.jpg",
-    "name": "80-chiclete-plutonita.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0,
-    "last_error": ""
-  },
-  {
     "id": "20261102114416-729f01@20261109160519",
     "key": "stories/20261102114416-729f01-81-linguica-perdigao.jpg",
     "name": "81-linguica-perdigao.jpg",
@@ -707,6 +699,14 @@
     "id": "20261102114416-901e66@20261111132018",
     "key": "stories/20261102114416-901e66-79-vodka-orloff.jpg",
     "name": "79-vodka-orloff.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": "20261102114416-954fbb@20261111133522",
+    "key": "stories/20261102114416-954fbb-80-chiclete-plutonita.jpg",
+    "name": "80-chiclete-plutonita.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0,
     "last_error": ""
