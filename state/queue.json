@@ -1,13 +1,5 @@
 [
   {
-    "id": "20261102114416-0ce89a@20261111183020",
-    "key": "stories/20261102114416-0ce89a-08-cachaca-matuta.jpg",
-    "name": "08-cachaca-matuta.jpg",
-    "added_at": "2026-11-02T11:44:16.590793-03:00",
-    "attempts": 0,
-    "last_error": ""
-  },
-  {
     "id": "20261102114416-2c1cfc@20261111184519",
     "key": "stories/20261102114416-2c1cfc-09-dove-sabonete.jpg",
     "name": "09-dove-sabonete.jpg",
@@ -707,6 +699,14 @@
     "id": "20261102114416-811058@20261113155522",
     "key": "stories/20261102114416-811058-07-antarctica-12-latas.jpg",
     "name": "07-antarctica-12-latas.jpg",
+    "added_at": "2026-11-02T11:44:16.590793-03:00",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": "20261102114416-0ce89a@20261113161015",
+    "key": "stories/20261102114416-0ce89a-08-cachaca-matuta.jpg",
+    "name": "08-cachaca-matuta.jpg",
     "added_at": "2026-11-02T11:44:16.590793-03:00",
     "attempts": 0,
     "last_error": ""
