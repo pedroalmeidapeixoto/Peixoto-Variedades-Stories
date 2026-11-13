@@ -21,6 +21,9 @@ REQUEST_TIMEOUT = 60
 AUTH_ERROR_CODES = frozenset({102, 190})  # invalid session / expired or revoked access token
 RATE_LIMIT_CODES = frozenset({4, 17, 32, 613})  # Graph API throttling
 RATE_LIMIT_HINTS = ("too many actions", "request limit", "rate limit", "too many calls")
+# Meta answers these while a freshly created container is still propagating; asking again works.
+TRANSIENT_HINTS = ("does not exist", "not available")
+TRANSIENT_RETRIES = 3
 
 
 class InstagramError(RuntimeError):
@@ -38,6 +41,12 @@ class InstagramError(RuntimeError):
     def is_auth_error(self) -> bool:
         """The token is expired or revoked: retrying other items will not help."""
         return self.code in AUTH_ERROR_CODES
+
+    @property
+    def is_transient(self) -> bool:
+        """ "Does not exist / not available" for a container that was just created."""
+        text = str(self).lower()
+        return any(hint in text for hint in TRANSIENT_HINTS)
 
     @property
     def is_rate_limit(self) -> bool:
@@ -95,7 +104,7 @@ class InstagramClient:
 
     def _wait_until_ready(self, container: str) -> None:
         for _ in range(self._max_polls):
-            body = self._call("GET", container, {"fields": "status_code"})
+            body = self._retrying(lambda: self._call("GET", container, {"fields": "status_code"}))
             status = body.get("status_code")
             if status == "FINISHED":
                 return
@@ -105,8 +114,22 @@ class InstagramClient:
         raise InstagramError(f"container {container} was not ready after {self._max_polls} checks")
 
     def _publish(self, container: str) -> str:
-        body = self._call("POST", f"{self._user_id}/media_publish", {"creation_id": container})
+        body = self._retrying(
+            lambda: self._call("POST", f"{self._user_id}/media_publish", {"creation_id": container})
+        )
         return str(body["id"])
+
+    def _retrying(self, call: Callable[[], dict[str, Any]]) -> dict[str, Any]:
+        """Run an API call, waiting and repeating a few times while Meta says the container is
+        not there yet. Any other error, or a persistent one, is raised as usual."""
+        for attempt in range(TRANSIENT_RETRIES + 1):
+            try:
+                return call()
+            except InstagramError as exc:
+                if not exc.is_transient or attempt == TRANSIENT_RETRIES:
+                    raise
+                self._sleep(self._poll_interval)
+        raise AssertionError("unreachable")  # pragma: no cover
 
     def _call(self, method: str, path: str, params: dict[str, str]) -> dict[str, Any]:
         payload = {**params, "access_token": self._token}

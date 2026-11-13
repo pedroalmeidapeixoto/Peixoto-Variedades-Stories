@@ -122,3 +122,50 @@ def test_publishing_quota_is_none_when_unavailable_or_oddly_shaped():
     assert make_client().publishing_quota() is None
     responses.replace(responses.GET, url, json={"data": []})
     assert make_client().publishing_quota() is None
+
+
+GONE = {"error": {"message": "The requested resource does not exist", "code": 100}}
+
+
+@responses.activate
+def test_a_container_that_is_not_visible_yet_is_polled_again():
+    responses.post(MEDIA, json={"id": "c1"})
+    responses.get(CONTAINER, status=400, json=GONE)  # first look: not propagated yet
+    responses.get(CONTAINER, json={"status_code": "FINISHED"})
+    responses.post(PUBLISH, json={"id": "m1"})
+
+    assert make_client().publish_story("https://x/a.jpg", is_video=False) == "m1"
+
+
+@responses.activate
+def test_publish_waits_when_the_media_id_is_not_available_yet():
+    responses.post(MEDIA, json={"id": "c1"})
+    responses.get(CONTAINER, json={"status_code": "FINISHED"})
+    responses.post(PUBLISH, status=400, json={"error": {"message": "Media ID is not available"}})
+    responses.post(PUBLISH, json={"id": "m1"})
+
+    assert make_client().publish_story("https://x/a.jpg", is_video=False) == "m1"
+    assert sum(1 for c in responses.calls if c.request.url.endswith("media_publish")) == 2
+
+
+@responses.activate
+def test_a_container_that_never_appears_still_fails_after_a_few_tries():
+    responses.post(MEDIA, json={"id": "c1"})
+    responses.get(CONTAINER, status=400, json=GONE)  # the same answer, every time
+
+    with pytest.raises(InstagramError, match="does not exist"):
+        make_client().publish_story("https://x/a.jpg", is_video=False)
+    polls = [c for c in responses.calls if c.request.url.startswith(CONTAINER)]
+    assert len(polls) == 4  # the first look plus three retries
+
+
+@responses.activate
+def test_other_errors_are_not_retried():
+    responses.post(MEDIA, json={"id": "c1"})
+    responses.get(
+        CONTAINER, status=400, json={"error": {"message": "Invalid parameter", "code": 100}}
+    )
+
+    with pytest.raises(InstagramError, match="Invalid parameter"):
+        make_client().publish_story("https://x/a.jpg", is_video=False)
+    assert len([c for c in responses.calls if c.request.url.startswith(CONTAINER)]) == 1
